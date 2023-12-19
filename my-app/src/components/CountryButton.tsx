@@ -1,18 +1,21 @@
 import { Avatar, Tooltip } from "@mui/material";
-import { Country } from ".";
-import { getAllCountries } from "../utils/countriesUtils";
+import { useNavigate } from "react-router-dom";
+import { BaseCountry } from ".";
 
 interface CountryButtonProps {
-  country: Country;
+  country : BaseCountry,
+  size? : number;
 }
 
-const CountryButton = ({ country }: CountryButtonProps) => {
+const CountryButton = ( {country, size} : CountryButtonProps) => {
+  const navigate = useNavigate();
+  
   const openCountryPage = () => {
-    // TODO: implement moving to country page
+    navigate(`/${country.name}`)
   };
   return (
     <Tooltip title={country.name} sx={{cursor: 'pointer'}}>
-      <Avatar src={country.flag} onClick={openCountryPage} sx={{width: 56, height: 56}}/>
+      <Avatar src={country.flag} onClick={openCountryPage} sx={{width: size ?? 56, height: size ?? 56, cursor:'pointer'}}/>
     </Tooltip>
   );
 };

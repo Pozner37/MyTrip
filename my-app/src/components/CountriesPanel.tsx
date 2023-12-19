@@ -1,26 +1,21 @@
-import { useEffect, useState } from "react";
-import { getAllCountries } from "../utils/countriesUtils";
 import CountryButton from "./CountryButton";
-import { Grid, ListItem } from "@mui/material";
+import { Grid } from "@mui/material";
+import { BaseCountry } from ".";
 
-const shuffleArray = (array) => array.slice().sort(() => Math.random() - 0.5);
+interface CountriesPanelProps {
+  countries : Array<BaseCountry>
+}
 
-const CountriesPanel = () => {
-  const [countries, setCountries] = useState<any>([]);
-
-  useEffect( () => {
-    const fetchCountries = async () => {
-        setCountries(shuffleArray(await getAllCountries()));
-    };
-    fetchCountries();
-  }, []);
+const CountriesPanel = ({countries} : CountriesPanelProps) => {
 
   return (
+    <>
     <Grid container spacing={5}>
       {countries && countries.map(
-        (country, index) => index < 48 && <Grid item xs={1}><CountryButton country={country} /></Grid>
+        (country, index) => <Grid item xs={1} key={index}><CountryButton country={country} /></Grid>
       )}
     </Grid>
+    </>
   );
 };
 

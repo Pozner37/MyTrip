@@ -10,11 +10,13 @@ import Avatar from "@mui/material/Avatar";
 import MenuItem from "@mui/material/MenuItem";
 import PublicIcon from "@mui/icons-material/Public";
 import { getUserProfilePicture } from "../utils/getUserProfilePicture";
+import { useNavigate } from "react-router-dom";
 
 const settings = ["פרופיל", "הפוסטים שלי", "התנתק"];
 
 const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate()
 
   const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget);
@@ -41,7 +43,9 @@ const ResponsiveAppBar = () => {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor:'pointer'
             }}
+            onClick={()=> navigate("/")}
           >
             MyTrip
           </Typography>
