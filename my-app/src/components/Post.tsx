@@ -4,10 +4,14 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Stack,
   Typography,
 } from "@mui/material";
 import { PostType } from ".";
-import { getPostImage } from "../utils/postsUtils";
+import { getPostCommentAmount, getPostImage } from "../utils/postsUtils";
+import AddCommentIcon from "@mui/icons-material/AddComment";
+import ForumIcon from "@mui/icons-material/Forum";
+import CommentIcon from '@mui/icons-material/Comment';
 
 interface PostProps {
   post: PostType;
@@ -15,24 +19,32 @@ interface PostProps {
 
 const Post = ({ post }: PostProps) => {
   return (
-    <Card sx={{ maxWidth: 800 }}>
+    <Card sx={{ width: "50%" }}>
       <CardMedia
-        sx={{ height: 300 }}
+        sx={{ height: "20em" }}
         image={getPostImage(post.id)}
-        title="green iguana"
+        title="Post"
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {post.username}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          {post.description}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+      <CardActions sx={{float: 'right'}}>
+        <Stack spacing={1} direction="row">
+        <Typography>{getPostCommentAmount(post.id)}</Typography>
+        <CommentIcon/>
+        <Button size="small" endIcon={<AddCommentIcon />}>
+          Comment
+        </Button>
+        <Button size="small" endIcon={<ForumIcon />}>
+          Chat
+        </Button>
+        </Stack>
+        
       </CardActions>
     </Card>
   );
