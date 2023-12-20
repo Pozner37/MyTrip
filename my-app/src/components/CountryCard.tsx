@@ -37,7 +37,7 @@ const CountryCardStyle: SxProps = {
   borderColor: blue[300],
   backgroundColor: blue[100],
   borderRadius: 5,
-  position: 'absolute'
+  position: "absolute",
 };
 
 interface CountryCardProps {

@@ -16,7 +16,7 @@ const settings = ["פרופיל", "הפוסטים שלי", "התנתק"];
 
 const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget);
@@ -43,19 +43,19 @@ const ResponsiveAppBar = () => {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
-              cursor:'pointer'
+              cursor: "pointer",
             }}
-            onClick={()=> navigate("/")}
+            onClick={() => navigate("/")}
           >
             MyTrip
           </Typography>
 
-          <Box sx={{ flexGrow: 0, marginLeft: 'auto'}}>
+          <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar src={getUserProfilePicture()} />
             </IconButton>
             <Menu
-              sx={{ mt: "45px" , direction: 'rtl'}}
+              sx={{ mt: "45px", direction: "rtl" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
