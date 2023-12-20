@@ -11,7 +11,7 @@ const CountryPage = () => {
   return (
     <>
       <CountryCard name={name} />
-      <Stack spacing={2} alignItems="center" sx={{paddingTop: '5%'}}>
+      <Stack spacing={2} alignItems="center" sx={{padding: '4%'}}>
         {posts && posts.map((post) => <Post post={post}/>)}
       </Stack>
     </>

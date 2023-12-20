@@ -17,10 +17,10 @@ export interface PostType {
     description: string;
     username: string;
     country: string;
-    comments: Array<Comment>
+    comments: Array<CommentType>
 }
 
-export interface Comment {
+export interface CommentType {
     id: string;
     comment: string;
     postId: string;

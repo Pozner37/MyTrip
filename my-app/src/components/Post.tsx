@@ -4,20 +4,40 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Collapse,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import { PostType } from ".";
-import { getPostCommentAmount, getPostImage } from "../utils/postsUtils";
+import { addCommentToPost, getPostCommentAmount, getPostImage } from "../utils/postsUtils";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import ForumIcon from "@mui/icons-material/Forum";
-import CommentIcon from '@mui/icons-material/Comment';
+import CommentIcon from "@mui/icons-material/Comment";
+import { useState } from "react";
+import Comment from "./Comment";
+import SendIcon from "@mui/icons-material/Send";
 
 interface PostProps {
   post: PostType;
 }
 
 const Post = ({ post }: PostProps) => {
+  const [showComment, setShowComment] = useState(false);
+  const [addComment, setAddComment] = useState(false);
+
+  const handleExpandClick = (
+    state: boolean,
+    setState: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    setState(!state);
+  };
+
   return (
     <Card sx={{ width: "50%" }}>
       <CardMedia
@@ -33,19 +53,57 @@ const Post = ({ post }: PostProps) => {
           {post.description}
         </Typography>
       </CardContent>
-      <CardActions sx={{float: 'right'}}>
+      <CardActions sx={{ float: "right" }}>
         <Stack spacing={1} direction="row">
-        <Typography>{getPostCommentAmount(post.id)}</Typography>
-        <CommentIcon/>
-        <Button size="small" endIcon={<AddCommentIcon />}>
-          Comment
-        </Button>
-        <Button size="small" endIcon={<ForumIcon />}>
-          Chat
-        </Button>
+          <Button
+            size="small"
+            endIcon={<CommentIcon />}
+            onClick={() => handleExpandClick(showComment, setShowComment)}
+          >
+            Show {getPostCommentAmount(post.id)} Comments
+          </Button>
+          <Button
+            size="small"
+            endIcon={<AddCommentIcon />}
+            onClick={() => handleExpandClick(addComment, setAddComment)}
+          >
+            Add Comment
+          </Button>
+          <Button size="small" endIcon={<ForumIcon />}>
+            Chat
+          </Button>
         </Stack>
-        
       </CardActions>
+      <Collapse in={showComment} timeout="auto" unmountOnExit>
+        <CardContent>
+          {post.comments?.map((comment) => (
+            <Comment comment={comment} />
+          ))}
+        </CardContent>
+      </Collapse>
+      <Collapse in={addComment} timeout="auto" unmountOnExit>
+        <CardContent>
+          <FormControl sx={{ width: "100%" }} variant="outlined">
+            <InputLabel htmlFor="comment-text">Add a comment</InputLabel>
+            <OutlinedInput
+              id="comment-text"
+              label="add a comment"
+              fullWidth
+              color="info"
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={() => {
+                    addCommentToPost();
+                    handleExpandClick(addComment, setAddComment);
+                    }} edge="end">
+                    <SendIcon color="info" />
+                  </IconButton>
+                </InputAdornment>
+              }
+            ></OutlinedInput>
+          </FormControl>
+        </CardContent>
+      </Collapse>
     </Card>
   );
 };

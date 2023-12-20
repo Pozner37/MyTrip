@@ -15,6 +15,30 @@ export const getPostsByCountry = (countryName: string): Array<PostType> => {
                 postId: '1',
                 username: 'yuvalHaBaayati'
             }]
+        },
+        {
+            id: '2',
+            country: 'Israel',
+            description: 'Very good wars I recommend',
+            username: 'Omri',
+            comments: [{
+                id: '32',
+                comment: 'I love Rehovot!',
+                postId: '1',
+                username: 'yuvalHaBaayati'
+            }]
+        },
+        {
+            id: '3',
+            country: 'Israel',
+            description: 'Very good wars I recommend',
+            username: 'Yuval',
+            comments: [{
+                id: '33',
+                comment: 'I love Rehovot!',
+                postId: '1',
+                username: 'yuvalHaBaayati'
+            }]
         }
     ]
 }
@@ -28,3 +52,7 @@ export const getPostCommentAmount = (postId: string) => {
      // TODO: implement when api is ready
      return 12;
 }
+
+export const addCommentToPost = () => {
+   // TODO: implement when api is ready 
+};
