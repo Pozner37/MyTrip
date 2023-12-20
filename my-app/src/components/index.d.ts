@@ -11,3 +11,18 @@ export interface BaseCountry {
     name: string;
     flag: string;
 }
+
+export interface PostType {
+    id: string;
+    description: string;
+    username: string;
+    country: string;
+    comments: Array<Comment>
+}
+
+export interface Comment {
+    id: string;
+    comment: string;
+    postId: string;
+    username: string;
+}

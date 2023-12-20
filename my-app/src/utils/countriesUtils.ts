@@ -7,7 +7,7 @@ export const getBaseCountriesByCode = (codes : Array<string>) =>
   getBaseCountries(`https://restcountries.com/v3.1/alpha?codes=${codes.join(',')}`);
 
 export const getCountryByName = (name : string) => 
-  getCountry(`https://restcountries.com/v3.1/name/${name}`);
+  getCountry(`https://restcountries.com/v3.1/name/${name}?fullText=true`);
 
 
 const getBaseCountries =async (path : string) => 

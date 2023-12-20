@@ -1,12 +1,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CountryPage from "./components/CountryPage";
 import ResponsiveAppBar from "./components/ResponsiveAppBar";
 import HomePage from "./routes/HomePage";
+import CountryPage from "./routes/CountryPage";
 
 function App() {
   return (
-    <>
     <BrowserRouter>
     <ResponsiveAppBar/>
       <Routes>
@@ -14,7 +13,6 @@ function App() {
         <Route path="/country/:name" element={<CountryPage/>}></Route>
       </Routes>
     </BrowserRouter>
-    </>
   );
 }
 
