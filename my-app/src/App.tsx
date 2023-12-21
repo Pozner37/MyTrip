@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CountryPage from "./components/CountryPage";
 import ResponsiveAppBar from "./components/ResponsiveAppBar";
@@ -10,7 +11,7 @@ function App() {
     <ResponsiveAppBar/>
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
-        <Route path="/:name" element={<CountryPage/>}></Route>
+        <Route path="/country/:name" element={<CountryPage/>}></Route>
       </Routes>
     </BrowserRouter>
     </>

@@ -11,7 +11,7 @@ const CountryButton = ( {country, size} : CountryButtonProps) => {
   const navigate = useNavigate();
   
   const openCountryPage = () => {
-    navigate(`/${country.name}`)
+    navigate(`/country/${country.name}`)
   };
   return (
     <Tooltip title={country.name} sx={{cursor: 'pointer'}}>

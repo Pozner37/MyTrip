@@ -1,45 +1,35 @@
 import axios from "axios";
-import { BaseCountry, Country } from "../components";
 
-export const getAllCountries =async () => 
-  await axios
-    .get("https://restcountries.com/v3.1/all")
-    .then(function (response) {
-      const countries: Array<Country> = response?.data?.map((country: any) => ({
-        name: country.name.common,
-        flag: country.flags.png,
-        continents: country.continents,
-        capital: (country.capital && country.capital[0]) || "-",
-      }));
+export const getAllBaseCountries = () => 
+  getBaseCountries("https://restcountries.com/v3.1/all/?fields=name,flags");
 
-      return countries;
-    })
-    .catch(function (error) {
-      throw `error fetching all countries: ${error}`;
-    });
-;
-export const getAllBaseCountries =async () => 
+export const getBaseCountriesByCode = (codes : Array<string>) => 
+  getBaseCountries(`https://restcountries.com/v3.1/alpha?codes=${codes.join(',')}`);
+
+export const getCountryByName = (name : string) => 
+  getCountry(`https://restcountries.com/v3.1/name/${name}`);
+
+
+const getBaseCountries =async (path : string) => 
   await axios
-    .get("https://restcountries.com/v3.1/all/?fields=name,flags")
+    .get(path)
     .then(function (response) {
-      const countries: Array<BaseCountry> = response?.data?.map((country: any) => ({
+      return response?.data?.map((country: any) => ({
         name: country.name.common,
         flag: country.flags.png
       }));
-
-      return countries;
     })
     .catch(function (error) {
-      throw `error fetching all countries: ${error}`;
+      throw `error fetching base countries: ${error}`;
     });
 ;
 
-export const getCountry =async (name : string) => 
+const getCountry =async (path : string) => 
   await axios
-    .get(`https://restcountries.com/v3.1/name/${name}`)
-    .then(function (response) {
+    .get(path)
+    .then(response => {
       const country = response?.data[0]
-      return {
+      return ({
         name: country.name.common,
         flag: country.flags.png,
         borders: country.borders ?? [],
@@ -48,25 +38,9 @@ export const getCountry =async (name : string) =>
         map: country.maps.googleMaps,
         population : country.population,
         area : country.area
-      } as Country;
+      });
     })
     .catch(function (error) {
-      throw `error fetching all countries: ${error}`;
+      throw `error fetching a country: ${error}`;
     });
-;
-
-export const getBaseByCodes =async (codes : Array<string>) => 
-  await axios
-  .get(`https://restcountries.com/v3.1/alpha?codes=${codes.join(',')}`)
-  .then(function (response) {
-    const countries: Array<BaseCountry> = response?.data?.map((country: any) => ({
-      name: country.name.common,
-      flag: country.flags.png
-    }));
-
-    return countries;
-  })
-  .catch(function (error) {
-    throw `error fetching all countries: ${error}`;
-  });
 ;
