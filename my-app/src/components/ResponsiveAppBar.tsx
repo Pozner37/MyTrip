@@ -11,11 +11,13 @@ import MenuItem from "@mui/material/MenuItem";
 import PublicIcon from "@mui/icons-material/Public";
 import { getUserProfilePicture } from "../utils/getUserProfilePicture";
 import { useNavigate } from "react-router-dom";
+import AuthModal from "./AuthModal";
 
 const settings = ["פרופיל", "הפוסטים שלי", "התנתק"];
 
 const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [openModal, setOpenModal] = React.useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event: any) => {
@@ -24,10 +26,12 @@ const ResponsiveAppBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    setOpenModal(true);
   };
 
   return (
     <AppBar position="static">
+      <AuthModal open={openModal} onClose={() => setOpenModal(false)}/>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <PublicIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
