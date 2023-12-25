@@ -1,8 +1,13 @@
 import axios from "axios";
-import { LoginProps } from "../components/Login";
+import { User } from "../components/SignUp";
 
-export const register = async (data : LoginProps) => 
-    await axios.post('http://localhost:5000/api/v1/auth/register', data);
+interface LoginUserDto {
+    userName : string;
+    password : string;
+}
 
-export const login = async (data : LoginProps) => 
-    await axios.post('http://localhost:5000/api/v1/auth/login', data);
+export const register = async (data : User) => 
+    await axios.post('http://localhost:5000/auth/register', data);
+
+export const login = async (data : LoginUserDto) => 
+    await axios.post('http://localhost:5000/auth/login', data);

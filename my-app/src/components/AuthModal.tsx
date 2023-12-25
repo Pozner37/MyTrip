@@ -1,16 +1,22 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Button, Modal, Box, Typography, Stack } from '@mui/material';
 import Login from './Login';
 import SignUp from './SignUp';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode'
 
-const AuthModal = ({ open, onClose }) => {
+interface AuthModalProps {
+    open : boolean;
+    onClose : () => void;
+    setUserName : Dispatch<SetStateAction<string | undefined>>;
+}
+
+const AuthModal = (props : AuthModalProps) => {
   
   const [alreadyUser, setAlreadyUser] = useState<boolean>(true)
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={props.open} onClose={props.onClose}>
         <Box
         sx={{
             position: 'absolute' as 'absolute',
@@ -25,10 +31,10 @@ const AuthModal = ({ open, onClose }) => {
             
         }}
         >
-        <Typography component="h1" variant="h5">
-            {alreadyUser ? "Login" : "SignUp"}
+        <Typography fontSize={25} textAlign={'center'}>
+            {alreadyUser ? "Login" : "Sign Up"}
         </Typography>
-        {alreadyUser ? <Login closeModal={onClose} moveToSignUp={() => setAlreadyUser(false)}/> : <SignUp moveToLogin={()=>setAlreadyUser(true)}/>}
+        {alreadyUser ? <Login setUserName={props.setUserName} closeModal={props.onClose} moveToSignUp={() => setAlreadyUser(false)}/> : <SignUp moveToLogin={()=>setAlreadyUser(true)}/>}
         <Stack display='flex' useFlexGap sx={{flexDirection:'row', paddingTop: 2}}>
         <GoogleLogin
             onSuccess={res=> res.credential && console.log(jwtDecode(res.credential))}

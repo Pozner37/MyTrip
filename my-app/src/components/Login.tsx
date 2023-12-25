@@ -1,30 +1,28 @@
 import { Box, TextField, Button } from "@mui/material";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { login } from "../utils/authUtils";
 import EmailTextField from "./EmailTextField";
 
 interface LoginModalProps {
     closeModal : () => void,
-    moveToSignUp : () => void
-}
-
-export interface LoginProps {
-    email : string,
-    password : string
+    moveToSignUp : () => void,
+    setUserName : Dispatch<SetStateAction<string | undefined>>
 }
 
 const Login = (props : LoginModalProps) => {
 
-    const [email, setEmail] = useState<string>('');
+  //  const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [emailValidity, setEmailValidity] = useState<boolean>(true)
+ //   const [emailValidity, setEmailValidity] = useState<boolean>(true)
+    const [modalUserName, setModalUserName] = useState<string>('')
 
     const handleLogin = async () => {
         // Add your login logic here
-        console.log('Logging in with:', { email, password });
-        await login({email: email, password : password}).then(res => {
+        console.log('Logging in with:', { modalUserName, password });
+        await login({userName: modalUserName, password : password}).then(res => {
             if (res.status === 200) {
                 console.log(res.data)
+                props.setUserName(res.data.userName)
                 props.closeModal();
             }
         }).catch(err=> {console.log(err)})
@@ -32,12 +30,15 @@ const Login = (props : LoginModalProps) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        emailValidity && handleLogin();
+       // emailValidity && handleLogin();
+       handleLogin();
     }
 
     return (
         <Box component="form" onSubmit={handleSubmit}>
-            <EmailTextField setEmail={setEmail} setValidity={setEmailValidity}/>
+            {/* <EmailTextField setEmail={setEmail} setValidity={setEmailValidity}/> */}
+            <TextField required fullWidth autoComplete="userName" label="User Name" value={modalUserName}
+         onChange={(e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setModalUserName(e.target.value)}/>
             <TextField margin="normal" required fullWidth name="password" label="Password"
             type="password" id="password" autoComplete="current-password" value={password}
             onChange={(e) => setPassword(e.target.value)} />

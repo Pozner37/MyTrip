@@ -8,7 +8,7 @@ interface SignUpModalProps {
     moveToLogin : () => void
 }
 
-interface User {
+export interface User {
     email : string,
     userName : string,
     password : string,
@@ -24,7 +24,7 @@ const SignUp = (props : SignUpModalProps) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (user && emailValidity && confirmPassword === user.password){
-            await register({email: user.email, password: user.password}).then(
+            await register(user).then(
                 res => {
                     if (res.status === 201) {
                         console.log(res.data)

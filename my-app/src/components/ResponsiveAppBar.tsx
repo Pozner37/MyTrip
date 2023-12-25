@@ -13,11 +13,10 @@ import { getUserProfilePicture } from "../utils/getUserProfilePicture";
 import { useNavigate } from "react-router-dom";
 import AuthModal from "./AuthModal";
 
-const settings = ["פרופיל", "הפוסטים שלי", "התנתק"];
-
 const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openModal, setOpenModal] = React.useState<boolean>(false);
+  const [userName, setUserName] = React.useState<string>();
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event: any) => {
@@ -26,12 +25,11 @@ const ResponsiveAppBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-    setOpenModal(true);
   };
 
   return (
     <AppBar position="static">
-      <AuthModal open={openModal} onClose={() => setOpenModal(false)}/>
+      <AuthModal open={openModal} onClose={() => setOpenModal(false)} setUserName={setUserName}/>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <PublicIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -74,11 +72,23 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography>{setting}</Typography>
+              {
+                userName ?
+                (<><MenuItem>
+                  <Typography>{userName}</Typography>
                 </MenuItem>
-              ))}
+                <MenuItem>
+                  <Typography>הפרופיל</Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography>הפוסטים שלי</Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography color='red'>התנתק</Typography>
+                </MenuItem></>) : (<MenuItem onClick={() => {handleCloseUserMenu(); setOpenModal(true);}}>
+                  <Typography>התחבר</Typography>
+                </MenuItem>)
+              }
             </Menu>
           </Box>
         </Toolbar>
