@@ -11,12 +11,12 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
-import { PostType } from ".";
+import { CommentType, PostType } from ".";
 import {
   addCommentToPost,
+  getCommentsByPost,
   getPostCommentAmount,
   getPostImage,
 } from "../utils/postsUtils";
@@ -36,6 +36,7 @@ const Post = ({ post }: PostProps) => {
   const [addComment, setAddComment] = useState(false);
   const [commentCount, setCommentCount] = useState<number>(0);
   const [commentInput, setCommentInput] = useState<string>("");
+  const [comments, setComments] = useState<Array<CommentType>>([]);
 
   const handleExpandClick = (
     state: boolean,
@@ -47,6 +48,10 @@ const Post = ({ post }: PostProps) => {
   useEffect(() => {
     getPostCommentAmount(post._id).then((res) => {
       return setCommentCount(res.data);
+    });
+
+    getCommentsByPost(post._id).then((res) => {
+      return setComments(res.data);
     });
   }, [addComment]);
 
@@ -88,7 +93,7 @@ const Post = ({ post }: PostProps) => {
       </CardActions>
       <Collapse in={showComment} timeout="auto" unmountOnExit>
         <CardContent>
-          {post.comments?.map((comment) => (
+          {comments?.map((comment) => (
             <Comment comment={comment} />
           ))}
         </CardContent>
