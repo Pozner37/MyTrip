@@ -13,16 +13,16 @@ export interface BaseCountry {
 }
 
 export interface PostType {
-    id: string;
+    _id: string;
     description: string;
-    username: string;
+    userName: string;
     country: string;
     comments: Array<CommentType>
 }
 
 export interface CommentType {
-    id: string;
-    comment: string;
+    _id: string;
+    commentContent: string;
     postId: string;
-    username: string;
+    user: string;
 }

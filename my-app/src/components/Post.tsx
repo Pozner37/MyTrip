@@ -15,11 +15,15 @@ import {
   Typography,
 } from "@mui/material";
 import { PostType } from ".";
-import { addCommentToPost, getPostCommentAmount, getPostImage } from "../utils/postsUtils";
+import {
+  addCommentToPost,
+  getPostCommentAmount,
+  getPostImage,
+} from "../utils/postsUtils";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import ForumIcon from "@mui/icons-material/Forum";
 import CommentIcon from "@mui/icons-material/Comment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Comment from "./Comment";
 import SendIcon from "@mui/icons-material/Send";
 
@@ -30,6 +34,8 @@ interface PostProps {
 const Post = ({ post }: PostProps) => {
   const [showComment, setShowComment] = useState(false);
   const [addComment, setAddComment] = useState(false);
+  const [commentCount, setCommentCount] = useState<number>(0);
+  const [commentInput, setCommentInput] = useState<string>("");
 
   const handleExpandClick = (
     state: boolean,
@@ -38,16 +44,22 @@ const Post = ({ post }: PostProps) => {
     setState(!state);
   };
 
+  useEffect(() => {
+    getPostCommentAmount(post._id).then((res) => {
+      return setCommentCount(res.data);
+    });
+  }, [addComment]);
+
   return (
     <Card sx={{ width: "50%" }}>
       <CardMedia
         sx={{ height: "20em" }}
-        image={getPostImage(post.id)}
+        image={getPostImage(post._id)}
         title="Post"
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {post.username}
+          {post.userName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {post.description}
@@ -60,7 +72,7 @@ const Post = ({ post }: PostProps) => {
             endIcon={<CommentIcon />}
             onClick={() => handleExpandClick(showComment, setShowComment)}
           >
-            Show {getPostCommentAmount(post.id)} Comments
+            Show {commentCount} Comments
           </Button>
           <Button
             size="small"
@@ -90,12 +102,21 @@ const Post = ({ post }: PostProps) => {
               label="add a comment"
               fullWidth
               color="info"
+              onChange={(e) => setCommentInput(e.target.value)}
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton onClick={() => {
-                    addCommentToPost();
-                    handleExpandClick(addComment, setAddComment);
-                    }} edge="end">
+                  <IconButton
+                    onClick={() => {
+                      commentInput &&
+                        addCommentToPost({
+                          commentContent: commentInput,
+                          postId: post._id,
+                          user: post.userName,
+                        });
+                      handleExpandClick(addComment, setAddComment);
+                    }}
+                    edge="end"
+                  >
                     <SendIcon color="info" />
                   </IconButton>
                 </InputAdornment>

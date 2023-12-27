@@ -9,10 +9,10 @@ const Comment = ({ comment }: CommentProps) => (
   <Card sx={{backgroundColor: '#c5e5ff' }}>
     <CardContent>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-        {comment.username}
+        {comment.user}
       </Typography>
       <Typography variant="subtitle1" component="div">
-        {comment.comment}
+        {comment.commentContent}
       </Typography>
     </CardContent>
   </Card>
