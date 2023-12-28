@@ -11,6 +11,7 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import { CommentType, PostType } from ".";
@@ -19,6 +20,7 @@ import {
   getCommentsByPost,
   getPostCommentAmount,
   getPostImage,
+  updatePost,
 } from "../utils/postsUtils";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import ForumIcon from "@mui/icons-material/Forum";
@@ -26,6 +28,9 @@ import CommentIcon from "@mui/icons-material/Comment";
 import { useEffect, useState } from "react";
 import Comment from "./Comment";
 import SendIcon from "@mui/icons-material/Send";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 interface PostProps {
   post: PostType;
@@ -37,6 +42,10 @@ const Post = ({ post }: PostProps) => {
   const [commentCount, setCommentCount] = useState<number>(0);
   const [commentInput, setCommentInput] = useState<string>("");
   const [comments, setComments] = useState<Array<CommentType>>([]);
+  const [edit, setEdit] = useState<boolean>(false);
+  const [description, setDescription] = useState<string>(post.description);
+
+  const user = "658768583bd6bbd56b8abe85"; // TODO: implement when users are ready - check if the post is by the currently logged in user
 
   const handleExpandClick = (
     state: boolean,
@@ -53,10 +62,10 @@ const Post = ({ post }: PostProps) => {
     getCommentsByPost(post._id).then((res) => {
       return setComments(res.data);
     });
-  }
+  };
 
   useEffect(() => {
-    fetchComments()
+    fetchComments();
   }, []);
 
   return (
@@ -67,12 +76,20 @@ const Post = ({ post }: PostProps) => {
         title="Post"
       />
       <CardContent>
+        {/* TODO: add edit picture */}
         <Typography gutterBottom variant="h5" component="div">
           {post.userName}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {post.description}
-        </Typography>
+        {edit ? (
+          <TextField
+            defaultValue={post.description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
+        )}
       </CardContent>
       <CardActions sx={{ float: "right" }}>
         <Stack spacing={1} direction="row">
@@ -93,6 +110,43 @@ const Post = ({ post }: PostProps) => {
           <Button size="small" endIcon={<ForumIcon />}>
             Chat
           </Button>
+          {user && !edit && (
+            <Button
+              size="small"
+              endIcon={<EditIcon />}
+              onClick={() => setEdit(true)}
+            >
+              Edit
+            </Button>
+          )}
+          {edit && (
+            <>
+              <Button
+                size="small"
+                endIcon={<SaveIcon />}
+                onClick={() => {
+                  updatePost({
+                    ...post,
+                    description,
+                    postId: post._id,
+                  });
+                  setEdit(false);
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                size="small"
+                endIcon={<CancelIcon />}
+                onClick={() => {
+                  setDescription(post.description);
+                  setEdit(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </>
+          )}
         </Stack>
       </CardActions>
       <Collapse in={showComment} timeout="auto" unmountOnExit>

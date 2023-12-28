@@ -19,6 +19,13 @@ export interface PostType {
     country: string;
 }
 
+export interface EditPostType {
+    postId: string;
+    description: string;
+    userName: string;
+    country: string;
+}
+
 export interface CommentType {
     _id: string;
     commentContent: string;

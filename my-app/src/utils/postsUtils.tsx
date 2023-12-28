@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CommentType, PostType } from "../components";
+import { CommentType, EditPostType, PostType } from "../components";
 
 interface ApiResponse {
   data: PostType[];
@@ -54,7 +54,7 @@ export const addPost = (post: Omit<PostType, "_id">) =>
     console.error(error);
   });
 
-export const updatePost = (post: Omit<PostType, "_id">) =>
+export const updatePost = (post: EditPostType) =>
   axios.put("http://localhost:3000/posts/", post).catch(function (error) {
     console.error(error);
   });
