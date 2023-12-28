@@ -69,7 +69,7 @@ const CountryPage = () => {
       <CountryCard name={name} />
       <Stack spacing={2} alignItems="center" sx={{ padding: "4%" }}>
         {(posts.length &&
-          posts.map((post) => <Post key={post._id} post={post} fetchPostsFunc={fetchPosts}/>) || '')}
+          posts.map((post) => <Post key={post._id} post={post} fetchPostsFunc={fetchPosts}/>) || 'This country has no posts')}
       </Stack>
       <Tooltip title="Add new post">
         <Fab
