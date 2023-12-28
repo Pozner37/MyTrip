@@ -33,6 +33,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ReactImageUploading, { ImageListType } from "react-images-uploading";
 
 interface PostProps {
   post: PostType;
@@ -47,6 +48,14 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
   const [comments, setComments] = useState<Array<CommentType>>([]);
   const [edit, setEdit] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(post.description);
+  const [images, setImages] = useState([]);
+
+  const onChange = (
+    imageList: ImageListType,
+    addUpdateIndex: number[] | undefined
+  ) => {
+    setImages(imageList as never[]);
+  };
 
   const user = "658768583bd6bbd56b8abe85"; // TODO: implement when users are ready - check if the post is by the currently logged in user
 
@@ -79,15 +88,51 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
         title="Post"
       />
       <CardContent>
-        {/* TODO: add edit picture */}
         <Typography gutterBottom variant="h5" component="div">
           {post.userName}
         </Typography>
         {edit ? (
-          <TextField
-            defaultValue={post.description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+          <>
+            <ReactImageUploading
+              value={images}
+              onChange={onChange}
+              maxNumber={1}
+            >
+              {({
+                imageList,
+                onImageUpload,
+                onImageUpdate,
+                onImageRemove,
+                isDragging,
+                dragProps,
+              }) => (
+                <div className="upload__image-wrapper">
+                  <Button
+                    style={isDragging ? { color: "red" } : undefined}
+                    onClick={onImageUpload}
+                    {...dragProps}
+                  >
+                    {isDragging ? "Drop photo here" : "Upload post photo"}
+                  </Button>
+                  &nbsp;
+                  {imageList.map((image, index) => (
+                    <div key={index} className="image-item">
+                      <img src={image.dataURL} alt="" width="100" />
+                      <div className="image-item__btn-wrapper">
+                        <Button onClick={() => onImageUpdate(index)}>
+                          Select new photo
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </ReactImageUploading>
+            <TextField
+              defaultValue={post.description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </>
         ) : (
           <Typography variant="body2" color="text.secondary">
             {description}
