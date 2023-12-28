@@ -58,3 +58,10 @@ export const updatePost = (post: EditPostType) =>
   axios.put("http://localhost:3000/posts/", post).catch(function (error) {
     console.error(error);
   });
+
+  export const deletePost = (postId: string) =>
+  axios.delete(`http://localhost:3000/posts/${postId}`, {
+    params: { postId }
+  }).catch(function (error) {
+    console.error(error);
+  });

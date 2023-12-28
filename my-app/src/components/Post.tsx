@@ -17,6 +17,7 @@ import {
 import { CommentType, PostType } from ".";
 import {
   addCommentToPost,
+  deletePost,
   getCommentsByPost,
   getPostCommentAmount,
   getPostImage,
@@ -31,6 +32,7 @@ import SendIcon from "@mui/icons-material/Send";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface PostProps {
   post: PostType;
@@ -111,13 +113,24 @@ const Post = ({ post }: PostProps) => {
             Chat
           </Button>
           {user && !edit && (
-            <Button
-              size="small"
-              endIcon={<EditIcon />}
-              onClick={() => setEdit(true)}
-            >
-              Edit
-            </Button>
+            <>
+              <Button
+                size="small"
+                endIcon={<EditIcon />}
+                onClick={() => setEdit(true)}
+              >
+                Edit
+              </Button>
+              <Button
+                size="small"
+                endIcon={<DeleteIcon />}
+                onClick={() => {
+                  deletePost(post._id);
+                }}
+              >
+                Delete Post
+              </Button>
+            </>
           )}
           {edit && (
             <>
