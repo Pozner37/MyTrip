@@ -45,7 +45,7 @@ const Post = ({ post }: PostProps) => {
     setState(!state);
   };
 
-  useEffect(() => {
+  const fetchComments = () => {
     getPostCommentAmount(post._id).then((res) => {
       return setCommentCount(res.data);
     });
@@ -53,7 +53,11 @@ const Post = ({ post }: PostProps) => {
     getCommentsByPost(post._id).then((res) => {
       return setComments(res.data);
     });
-  }, [addComment]);
+  }
+
+  useEffect(() => {
+    fetchComments()
+  }, []);
 
   return (
     <Card sx={{ width: "50%" }}>
@@ -117,7 +121,7 @@ const Post = ({ post }: PostProps) => {
                           commentContent: commentInput,
                           postId: post._id,
                           user: post.userName,
-                        });
+                        }).then(fetchComments);
                       handleExpandClick(addComment, setAddComment);
                     }}
                     edge="end"

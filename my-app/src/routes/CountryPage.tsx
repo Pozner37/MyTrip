@@ -8,6 +8,7 @@ import {
   Modal,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -60,13 +61,15 @@ const CountryPage = () => {
         {posts.length &&
           posts.map((post) => <Post key={post._id} post={post} />)}
       </Stack>
+      <Tooltip title="Add new post">
       <Fab
         color="primary"
-        sx={{ position: "absolute", left: "1%", top: "92%" }}
+        sx={{ position: "fixed", left: "1%", top: "92%" }}
         onClick={() => setOpenModal(true)}
       >
         <AddIcon />
       </Fab>
+      </Tooltip>
       <Modal open={openModal}>
         <Box sx={modalStyle}>
           <Stack spacing={2}>
