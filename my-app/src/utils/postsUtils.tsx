@@ -28,3 +28,14 @@ export const addCommentToPost = (comment: Omit<CommentType, "_id">) => {
         console.error(error);
     });
 };
+
+export const addPost = (post: Omit<PostType, "_id">) => 
+    axios.post('http://localhost:3000/posts/', post).catch(function (error) {
+        console.error(error);
+    });
+
+export const updatePost = (post: Omit<PostType, "_id">) => {
+    axios.put('http://localhost:3000/posts/', post).catch(function (error) {
+        console.error(error);
+    });
+};

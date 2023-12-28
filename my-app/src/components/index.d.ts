@@ -17,7 +17,6 @@ export interface PostType {
     description: string;
     userName: string;
     country: string;
-    comments: Array<CommentType>
 }
 
 export interface CommentType {

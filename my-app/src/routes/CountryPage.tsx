@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import CountryCard from "../components/CountryCard";
 import Post from "../components/Post";
-import { getPostsByCountry } from "../utils/postsUtils";
+import { addPost, getPostsByCountry } from "../utils/postsUtils";
 import {
   Box,
   Button,
@@ -29,18 +29,29 @@ const modalStyle = {
 
 const CountryPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [description, setDescription] = useState<string>("");
   const { name } = useParams();
 
-  useEffect(() => {
+  const fetchPosts = () => {
     if (name) {
       getPostsByCountry(name).then((res) => {
         return setPosts(res.data);
       });
     }
+  };
+
+  useEffect(() => {
+    fetchPosts();
   }, []);
 
-  const addPost = () => {};
+  const addNewPost = () => {
+    name && addPost({
+      description,
+      country: name,
+      userName: '658768583bd6bbd56b8abe85' // TODO: implement when users are ready
+    }).then(fetchPosts);
+  };
 
   return (
     <>
@@ -62,11 +73,17 @@ const CountryPage = () => {
             <Typography variant="h6" component="h2">
               Share a post from {name}:
             </Typography>
-            <TextField required id="outlined-required" label="Description" />
+            <TextField
+              required
+              label="Description"
+              multiline
+              maxRows={4}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </Stack>
           <Button
             onClick={() => {
-              addPost();
+              addNewPost();
               setOpenModal(false);
             }}
           >
