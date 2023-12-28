@@ -36,9 +36,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 interface PostProps {
   post: PostType;
+  fetchPostsFunc: () => void;
 }
 
-const Post = ({ post }: PostProps) => {
+const Post = ({ post, fetchPostsFunc }: PostProps) => {
   const [showComment, setShowComment] = useState(false);
   const [addComment, setAddComment] = useState(false);
   const [commentCount, setCommentCount] = useState<number>(0);
@@ -125,7 +126,7 @@ const Post = ({ post }: PostProps) => {
                 size="small"
                 endIcon={<DeleteIcon />}
                 onClick={() => {
-                  deletePost(post._id);
+                  deletePost(post._id).then(fetchPostsFunc);
                 }}
               >
                 Delete Post
