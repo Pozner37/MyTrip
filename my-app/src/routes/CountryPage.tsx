@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { PostType } from "../components";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import ReactImageUploading, { ImageListType } from "react-images-uploading";
 
 const modalStyle = {
   position: "absolute" as "absolute",
@@ -33,6 +34,16 @@ const CountryPage = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const { name } = useParams();
+  const [images, setImages] = useState([]);
+
+  const onChange = (
+    imageList: ImageListType,
+    addUpdateIndex: number[] | undefined
+  ) => {
+    // data for submit
+    console.log(imageList, addUpdateIndex);
+    setImages(imageList as never[]);
+  };
 
   const fetchPosts = () => {
     if (name) {
@@ -47,11 +58,12 @@ const CountryPage = () => {
   }, []);
 
   const addNewPost = () => {
-    name && addPost({
-      description,
-      country: name,
-      userName: '658768583bd6bbd56b8abe85' // TODO: implement when users are ready
-    }).then(fetchPosts);
+    name &&
+      addPost({
+        description,
+        country: name,
+        userName: "658768583bd6bbd56b8abe85", // TODO: implement when users are ready
+      }).then(fetchPosts);
   };
 
   return (
@@ -62,13 +74,13 @@ const CountryPage = () => {
           posts.map((post) => <Post key={post._id} post={post} />)}
       </Stack>
       <Tooltip title="Add new post">
-      <Fab
-        color="primary"
-        sx={{ position: "fixed", left: "1%", top: "92%" }}
-        onClick={() => setOpenModal(true)}
-      >
-        <AddIcon />
-      </Fab>
+        <Fab
+          color="primary"
+          sx={{ position: "fixed", left: "1%", top: "92%" }}
+          onClick={() => setOpenModal(true)}
+        >
+          <AddIcon />
+        </Fab>
       </Tooltip>
       <Modal open={openModal}>
         <Box sx={modalStyle}>
@@ -83,6 +95,44 @@ const CountryPage = () => {
               maxRows={4}
               onChange={(e) => setDescription(e.target.value)}
             />
+            <ReactImageUploading
+              value={images}
+              onChange={onChange}
+              maxNumber={1}
+            >
+              {({
+                imageList,
+                onImageUpload,
+                onImageUpdate,
+                onImageRemove,
+                isDragging,
+                dragProps,
+              }) => (
+                <div className="upload__image-wrapper">
+                  <Button
+                    style={isDragging ? { color: "red" } : undefined}
+                    onClick={onImageUpload}
+                    {...dragProps}
+                  >
+                    {isDragging ? "Drop photo here" : "Upload post photo"}
+                  </Button>
+                  &nbsp;
+                  {imageList.map((image, index) => (
+                    <div key={index} className="image-item">
+                      <img src={image.dataURL} alt="" width="100" />
+                      <div className="image-item__btn-wrapper">
+                        <Button onClick={() => onImageUpdate(index)}>
+                          Select new photo
+                        </Button>
+                        <Button onClick={() => onImageRemove(index)}>
+                          Remove photo
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </ReactImageUploading>
           </Stack>
           <Button
             onClick={() => {
