@@ -2,11 +2,12 @@ import { Box, TextField, Button } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { login } from "../utils/authUtils";
 import EmailTextField from "./EmailTextField";
+import { useDispatch } from "react-redux";
+import { setUserName } from "../redux/reducers/UserReducer";
 
 interface LoginModalProps {
     closeModal : () => void,
-    moveToSignUp : () => void,
-    setUserName : Dispatch<SetStateAction<string | undefined>>
+    moveToSignUp : () => void
 }
 
 const Login = (props : LoginModalProps) => {
@@ -15,6 +16,7 @@ const Login = (props : LoginModalProps) => {
     const [password, setPassword] = useState<string>('');
  //   const [emailValidity, setEmailValidity] = useState<boolean>(true)
     const [modalUserName, setModalUserName] = useState<string>('')
+    const dispatch = useDispatch();
 
     const handleLogin = async () => {
         // Add your login logic here
@@ -22,7 +24,7 @@ const Login = (props : LoginModalProps) => {
         await login({userName: modalUserName, password : password}).then(res => {
             if (res.status === 200) {
                 console.log(res.data)
-                props.setUserName(res.data.userName)
+                dispatch(setUserName(res.data.userName))
                 props.closeModal();
             }
         }).catch(err=> {console.log(err)})

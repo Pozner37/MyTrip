@@ -4,19 +4,19 @@ import Login from './Login';
 import SignUp from './SignUp';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode'
+import { useDispatch, useSelector } from 'react-redux';
+import { UserState, setShowAuthModal } from '../redux/reducers/UserReducer';
 
-interface AuthModalProps {
-    open : boolean;
-    onClose : () => void;
-    setUserName : Dispatch<SetStateAction<string | undefined>>;
-}
+const AuthModal = () => {
+  const appProps = useSelector((state: UserState) => state);
 
-const AuthModal = (props : AuthModalProps) => {
-  
   const [alreadyUser, setAlreadyUser] = useState<boolean>(true)
+  const dispatch = useDispatch();
+
+  const onClose = () => dispatch(setShowAuthModal(false))
 
   return (
-    <Modal open={props.open} onClose={props.onClose}>
+    <Modal open={appProps.showAuthModal} onClose={onClose}>
         <Box
         sx={{
             position: 'absolute' as 'absolute',
@@ -34,7 +34,7 @@ const AuthModal = (props : AuthModalProps) => {
         <Typography fontSize={25} textAlign={'center'}>
             {alreadyUser ? "Login" : "Sign Up"}
         </Typography>
-        {alreadyUser ? <Login setUserName={props.setUserName} closeModal={props.onClose} moveToSignUp={() => setAlreadyUser(false)}/> : <SignUp moveToLogin={()=>setAlreadyUser(true)}/>}
+        {alreadyUser ? <Login closeModal={onClose} moveToSignUp={() => setAlreadyUser(false)}/> : <SignUp moveToLogin={()=>setAlreadyUser(true)}/>}
         <Stack display='flex' useFlexGap sx={{flexDirection:'row', paddingTop: 2}}>
         <GoogleLogin
             onSuccess={res=> res.credential && console.log(jwtDecode(res.credential))}
