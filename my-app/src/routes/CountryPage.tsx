@@ -16,6 +16,7 @@ import { PostType } from "../components";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
+import store from "../redux/store";
 
 const modalStyle = {
   position: "absolute" as "absolute",
@@ -35,6 +36,7 @@ const CountryPage = () => {
   const [description, setDescription] = useState<string>("");
   const { name } = useParams();
   const [images, setImages] = useState([]);
+  const userName = store.getState().userName;
 
   const onChange = (
     imageList: ImageListType,
@@ -57,10 +59,11 @@ const CountryPage = () => {
 
   const addNewPost = () => {
     name &&
+      userName &&
       addPost({
         description,
         country: name,
-        userName: "658768583bd6bbd56b8abe85", // TODO: implement when users are ready
+        userName: userName,
       }).then(fetchPosts);
   };
 
@@ -69,17 +72,22 @@ const CountryPage = () => {
       <CountryCard name={name} />
       <Stack spacing={2} alignItems="center" sx={{ padding: "4%" }}>
         {(posts.length &&
-          posts.map((post) => <Post key={post._id} post={post} fetchPostsFunc={fetchPosts}/>) || 'This country has no posts')}
+          posts.map((post) => (
+            <Post key={post._id} post={post} fetchPostsFunc={fetchPosts} />
+          ))) ||
+          "This country has no posts"}
       </Stack>
-      <Tooltip title="Add new post">
-        <Fab
-          color="primary"
-          sx={{ position: "fixed", left: "1%", top: "92%" }}
-          onClick={() => setOpenModal(true)}
-        >
-          <AddIcon />
-        </Fab>
-      </Tooltip>
+      {userName && (
+        <Tooltip title="Add new post">
+          <Fab
+            color="primary"
+            sx={{ position: "fixed", left: "1%", top: "92%" }}
+            onClick={() => setOpenModal(true)}
+          >
+            <AddIcon />
+          </Fab>
+        </Tooltip>
+      )}
       <Modal open={openModal}>
         <Box sx={modalStyle}>
           <Stack spacing={2}>

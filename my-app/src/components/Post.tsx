@@ -34,6 +34,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
+import store from "../redux/store";
 
 interface PostProps {
   post: PostType;
@@ -49,6 +50,8 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(post.description);
   const [images, setImages] = useState([]);
+  const userName = store.getState().userName;
+  const isPostOwner = post.userName === userName;
 
   const onChange = (
     imageList: ImageListType,
@@ -56,8 +59,6 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
   ) => {
     setImages(imageList as never[]);
   };
-
-  const user = "658768583bd6bbd56b8abe85"; // TODO: implement when users are ready - check if the post is by the currently logged in user
 
   const handleExpandClick = (
     state: boolean,
@@ -148,17 +149,21 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
           >
             Show {commentCount} Comments
           </Button>
-          <Button
-            size="small"
-            endIcon={<AddCommentIcon />}
-            onClick={() => handleExpandClick(addComment, setAddComment)}
-          >
-            Add Comment
-          </Button>
-          <Button size="small" endIcon={<ForumIcon />}>
-            Chat
-          </Button>
-          {user && !edit && (
+          {userName && (
+            <>
+              <Button
+                size="small"
+                endIcon={<AddCommentIcon />}
+                onClick={() => handleExpandClick(addComment, setAddComment)}
+              >
+                Add Comment
+              </Button>
+              <Button size="small" endIcon={<ForumIcon />}>
+                Chat
+              </Button>
+            </>
+          )}
+          {isPostOwner && !edit && (
             <>
               <Button
                 size="small"
@@ -217,34 +222,37 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
       </Collapse>
       <Collapse in={addComment} timeout="auto" unmountOnExit>
         <CardContent>
-          <FormControl sx={{ width: "100%" }} variant="outlined">
-            <InputLabel htmlFor="comment-text">Add a comment</InputLabel>
-            <OutlinedInput
-              id="comment-text"
-              label="add a comment"
-              fullWidth
-              color="info"
-              onChange={(e) => setCommentInput(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => {
-                      commentInput &&
-                        addCommentToPost({
-                          commentContent: commentInput,
-                          postId: post._id,
-                          user: post.userName,
-                        }).then(fetchComments);
-                      handleExpandClick(addComment, setAddComment);
-                    }}
-                    edge="end"
-                  >
-                    <SendIcon color="info" />
-                  </IconButton>
-                </InputAdornment>
-              }
-            ></OutlinedInput>
-          </FormControl>
+          {userName && (
+            <FormControl sx={{ width: "100%" }} variant="outlined">
+              <InputLabel htmlFor="comment-text">Add a comment</InputLabel>
+              <OutlinedInput
+                id="comment-text"
+                label="add a comment"
+                fullWidth
+                color="info"
+                onChange={(e) => setCommentInput(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        commentInput &&
+                          userName &&
+                          addCommentToPost({
+                            commentContent: commentInput,
+                            postId: post._id,
+                            user: userName,
+                          }).then(fetchComments);
+                        handleExpandClick(addComment, setAddComment);
+                      }}
+                      edge="end"
+                    >
+                      <SendIcon color="info" />
+                    </IconButton>
+                  </InputAdornment>
+                }
+              ></OutlinedInput>
+            </FormControl>
+          )}
         </CardContent>
       </Collapse>
     </Card>

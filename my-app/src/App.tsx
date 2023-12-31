@@ -7,6 +7,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import AuthModal from "./components/AuthModal";
 import { Provider, useDispatch } from "react-redux";
 import store from "./redux/store";
+import MyPostsPage from "./routes/MyPostsPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/country/:name" element={<CountryPage/>}></Route>
+            <Route path="/myposts" element={<MyPostsPage/>}></Route>
           </Routes>
         </BrowserRouter>
     <AuthModal/>
