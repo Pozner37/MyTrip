@@ -158,9 +158,11 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
               >
                 Add Comment
               </Button>
-              <Button size="small" endIcon={<ForumIcon />}>
-                Chat
-              </Button>
+              {!isPostOwner && (
+                <Button size="small" endIcon={<ForumIcon />}>
+                  Chat
+                </Button>
+              )}
             </>
           )}
           {isPostOwner && !edit && (
