@@ -8,20 +8,13 @@ import AuthModal from "./components/AuthModal";
 import { Provider, useDispatch } from "react-redux";
 import store from "./redux/store";
 import MyPostsPage from "./routes/MyPostsPage";
+import AppView from "./components/AppView";
 
 function App() {
   return (
     <Provider store={store}>
     <GoogleOAuthProvider clientId="999188403168-50hsegkfkhput286r1ie6q208balov63.apps.googleusercontent.com">
-        <BrowserRouter>
-        <ResponsiveAppBar/>
-          <Routes>
-            <Route path="/" element={<HomePage />}></Route>
-            <Route path="/country/:name" element={<CountryPage/>}></Route>
-            <Route path="/myposts" element={<MyPostsPage/>}></Route>
-          </Routes>
-        </BrowserRouter>
-    <AuthModal/>
+        <AppView/>
     </GoogleOAuthProvider>
     </Provider>
   );

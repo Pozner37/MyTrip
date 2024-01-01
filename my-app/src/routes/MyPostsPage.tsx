@@ -4,10 +4,12 @@ import { Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { PostType } from "../components";
 import store from "../redux/store";
+import { useSelector } from "react-redux";
+import { UserState } from "../redux/reducers/UserReducer";
 
 const MyPostsPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
-  const userName = store.getState().userName;
+  const userName = useSelector((state: UserState) => state.userName)
 
   const fetchPosts = () => {
     if (userName) {
@@ -19,7 +21,7 @@ const MyPostsPage = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [userName]);
 
   return (
     <>

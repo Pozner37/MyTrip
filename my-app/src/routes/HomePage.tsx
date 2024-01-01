@@ -31,8 +31,6 @@ const HomePage = () => {
   const [filteredCountries, setFilteredCountries] = useState<Array<BaseCountry>>(countries)
   const [searchText, setSearchText] = useState<string>("")
 
-  useGetUser();
-
   useEffect(()=>{
     const fetchCountries = async () => {
       setCountries(shuffleArray(await getAllBaseCountries()));
