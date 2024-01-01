@@ -16,9 +16,11 @@ import store from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   UserState,
+  logoutUserName,
   setShowAuthModal,
   setUserName,
 } from "../redux/reducers/UserReducer";
+import { logout } from "../utils/authUtils";
 
 const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -32,6 +34,14 @@ const ResponsiveAppBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = async () => {
+    await logout().then(res => {
+      if (res.status === 200){
+        dispatch(logoutUserName())
+      }
+    })
   };
 
   return (
@@ -109,7 +119,7 @@ const ResponsiveAppBar = () => {
                       <Typography>הפוסטים שלי</Typography>
                     </MenuItem>
                     <MenuItem>
-                      <Typography color="red">התנתק</Typography>
+                      <Typography color="red" onClick={handleLogout}>התנתק</Typography>
                     </MenuItem>
                   </>
                 ) : (
