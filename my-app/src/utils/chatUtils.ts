@@ -3,8 +3,8 @@ import { ApiResponse } from "./postsUtils";
 
 export const getChatFromDB = async (
     users :{
-        fromUser: string,
-        toUser: string
+        firstUser: string,
+        secondUser: string
     }
   ): Promise<ApiResponse | any> =>
     axios

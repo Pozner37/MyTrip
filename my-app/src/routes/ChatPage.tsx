@@ -14,9 +14,9 @@ const ChatPage = () => {
 
   useEffect(() => {
     // fetch messages from db
-    username && getChatFromDB({ fromUser: username, toUser: location.state.toUser }).then(
-      (data) => {
-        return setMessages(data.messages);
+    username && getChatFromDB({ firstUser: username, secondUser: location.state.toUser }).then(
+      ({data: oldMessages}) => {
+        return setMessages(oldMessages);
       }
     );
 
@@ -35,6 +35,7 @@ const ChatPage = () => {
         messageContent: input,
         sendTime: new Date(),
       };
+      setMessages([...messages, message]);
       socket.emit("send-message", message);
     }
   };
@@ -51,7 +52,7 @@ const ChatPage = () => {
       </Grid>
       <Grid item>
         {messages?.map((message) => (
-          <Typography>{message.messageContent}</Typography>
+          <Typography>{`${message.fromUser}: ${message.messageContent}`}</Typography>
         ))}
       </Grid>
     </Grid>
