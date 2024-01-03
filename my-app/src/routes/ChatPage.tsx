@@ -1,4 +1,4 @@
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { MessageType } from "../components";
 import { socket } from "../utils/socket";
@@ -12,14 +12,14 @@ const ChatPage = () => {
   const username = store.getState().userName;
 
   useEffect(() => {
+    // fetch messages from db
+    
+
+    // establish live updates from socket
     socket.emit("new-user", username);
     socket.on("receive-message", (message) =>
       setMessages([...messages, message])
     );
-
-    return () => {
-      socket.emit("leave-chat", username);
-    };
   }, []);
 
   const location = useLocation();
@@ -46,7 +46,11 @@ const ChatPage = () => {
         />
         <Button onClick={sendMessage}>Send</Button>
       </Grid>
-      <Grid item></Grid>
+      <Grid item>
+        {messages?.map((message) => (
+          <Typography>{message.messageContent}</Typography>
+        ))}
+      </Grid>
     </Grid>
   );
 };

@@ -29,25 +29,6 @@ const HomePage = () => {
   const [countries, setCountries] = useState<Array<BaseCountry>>([]);
   const [filteredCountries, setFilteredCountries] = useState<Array<BaseCountry>>(countries);
   const [searchText, setSearchText] = useState<string>("");
-  const [messages, setMessages] = useState<string[]>([]);
-  const [message, setMessage] = useState('');
-
-  useEffect(() => { 
-    // Listen for incoming messages
-    socket.on('message', (data: string) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-
-    // Clean up socket on unmount
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  const sendMessage = () => {
-    socket.emit('message', { user: 'User', text: message });
-    setMessage('');
-  };
 
   useEffect(()=>{
     const fetchCountries = async () => {
