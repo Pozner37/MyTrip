@@ -4,16 +4,21 @@ import { MessageType } from "../components";
 import { socket } from "../utils/socket";
 import store from "../redux/store";
 import { useLocation } from "react-router-dom";
+import { getChatFromDB } from "../utils/chatUtils";
 
 const ChatPage = () => {
   const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useState<MessageType[]>([]);
-
+  const location = useLocation();
   const username = store.getState().userName;
 
   useEffect(() => {
     // fetch messages from db
-    
+    username && getChatFromDB({ fromUser: username, toUser: location.state.toUser }).then(
+      (data) => {
+        return setMessages(data.messages);
+      }
+    );
 
     // establish live updates from socket
     socket.emit("new-user", username);
@@ -21,8 +26,6 @@ const ChatPage = () => {
       setMessages([...messages, message])
     );
   }, []);
-
-  const location = useLocation();
 
   const sendMessage = () => {
     if (username) {
