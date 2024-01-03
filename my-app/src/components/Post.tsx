@@ -35,6 +35,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import store from "../redux/store";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface PostProps {
   post: PostType;
@@ -52,6 +53,8 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
   const [images, setImages] = useState([]);
   const userName = store.getState().userName;
   const isPostOwner = post.userName === userName;
+
+  const navigate = useNavigate();
 
   const onChange = (
     imageList: ImageListType,
@@ -159,7 +162,13 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
                 Add Comment
               </Button>
               {!isPostOwner && (
-                <Button size="small" endIcon={<ForumIcon />}>
+                <Button
+                  size="small"
+                  endIcon={<ForumIcon />}
+                  onClick={() =>
+                    navigate("/chat", { state: { toUser: post.userName } })
+                  }
+                >
                   Chat
                 </Button>
               )}

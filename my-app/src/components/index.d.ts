@@ -32,3 +32,10 @@ export interface CommentType {
     postId: string;
     user: string;
 }
+
+export interface MessageType {
+  fromUser: string;
+  toUser: string;
+  messageContent: string;
+  sendTime: Date;
+}
