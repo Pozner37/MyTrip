@@ -14,11 +14,16 @@ const ChatPage = () => {
 
   useEffect(() => {
     // fetch messages from db
-    username && getChatFromDB({ firstUser: username, secondUser: location.state.toUser }).then(
-      ({data: oldMessages}) => {
-        return setMessages(oldMessages);
-      }
-    );
+    username &&
+      getChatFromDB({
+        firstUser: username,
+        secondUser: location.state.toUser,
+      }).then(({ data: oldMessages }) => {
+        oldMessages.forEach((msg) => (msg.sendTime = new Date(msg.sendTime)));
+        return setMessages(
+          oldMessages.sort((msg1, msg2) => msg1.sendTime - msg2.sendTime)
+        );
+      });
 
     // establish live updates from socket
     socket.emit("new-user", username);
@@ -52,7 +57,9 @@ const ChatPage = () => {
       </Grid>
       <Grid item>
         {messages?.map((message) => (
-          <Typography>{`${message.fromUser}: ${message.messageContent}`}</Typography>
+          <Typography>{`${message.sendTime.toLocaleString()} - ${message.fromUser}: ${
+            message.messageContent
+          }`}</Typography>
         ))}
       </Grid>
     </Grid>
