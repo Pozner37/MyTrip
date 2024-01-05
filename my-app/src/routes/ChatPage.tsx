@@ -12,6 +12,14 @@ const ChatPage = () => {
   const location = useLocation();
   const username = store.getState().userName;
 
+  socket.on("receive-message", (message) => {
+    if (message.fromUser === location.state.toUser) {
+      message.sendTime = new Date(message.sendTime);
+      console.log(`got new message from ${message.fromUser}`);
+      setMessages([...messages, message]);
+    }
+  });
+
   useEffect(() => {
     // fetch messages from db
     username &&
@@ -27,9 +35,6 @@ const ChatPage = () => {
 
     // establish live updates from socket
     socket.emit("new-user", username);
-    socket.on("receive-message", (message) =>
-      setMessages([...messages, message])
-    );
   }, []);
 
   const sendMessage = () => {
@@ -56,10 +61,10 @@ const ChatPage = () => {
         <Button onClick={sendMessage}>Send</Button>
       </Grid>
       <Grid item>
-        {messages?.map((message) => (
-          <Typography>{`${message.sendTime.toLocaleString()} - ${message.fromUser}: ${
-            message.messageContent
-          }`}</Typography>
+        {messages?.map((message, index) => (
+          <Typography key={index}>{`${message.sendTime.toLocaleString()} - ${
+            message.fromUser
+          }: ${message.messageContent}`}</Typography>
         ))}
       </Grid>
     </Grid>
