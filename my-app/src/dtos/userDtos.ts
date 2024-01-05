@@ -15,10 +15,4 @@ interface LoginDto {
     password : string;
 }
 
-interface LoginResponseDto {
-    userName : string;
-    accessToken : string;
-    refreshToken : string;
-}
-
-export type { LoginDto, LoginResponseDto, User, BasicUserDto}
+export type { LoginDto, User, BasicUserDto}

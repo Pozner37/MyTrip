@@ -16,7 +16,6 @@ import { PostType } from "../components";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
-import store from "../redux/store";
 import { useSelector } from "react-redux";
 import { UserState } from "../redux/reducers/UserReducer";
 

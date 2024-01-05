@@ -1,7 +1,6 @@
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Box, TextField, Button } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { login } from "../utils/authUtils";
-import EmailTextField from "./EmailTextField";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/reducers/UserReducer";
 import { AxiosError } from "axios";
@@ -14,9 +13,7 @@ interface LoginModalProps {
 
 const Login = (props : LoginModalProps) => {
 
-  //  const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
- //   const [emailValidity, setEmailValidity] = useState<boolean>(true)
     const [modalUserName, setModalUserName] = useState<string>('')
     const dispatch = useDispatch();
 
@@ -42,7 +39,6 @@ const Login = (props : LoginModalProps) => {
 
     return (
         <Box component="form" onSubmit={handleSubmit}>
-            {/* <EmailTextField setEmail={setEmail} setValidity={setEmailValidity}/> */}
             <TextField required fullWidth autoComplete="userName" label="User Name" value={modalUserName}
          onChange={(e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setModalUserName(e.target.value)}/>
             <TextField margin="normal" required fullWidth name="password" label="Password"

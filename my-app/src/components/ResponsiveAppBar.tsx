@@ -11,8 +11,6 @@ import MenuItem from "@mui/material/MenuItem";
 import PublicIcon from "@mui/icons-material/Public";
 import { getUserProfilePicture } from "../utils/getUserProfilePicture";
 import { useNavigate } from "react-router-dom";
-import AuthModal from "./AuthModal";
-import store from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   UserState,

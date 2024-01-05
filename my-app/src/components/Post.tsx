@@ -34,7 +34,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
-import store from "../redux/store";
 import { useSelector } from "react-redux";
 import { UserState } from "../redux/reducers/UserReducer";
 
