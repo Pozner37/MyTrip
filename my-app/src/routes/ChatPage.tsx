@@ -59,12 +59,21 @@ const ChatPage = () => {
           {location.state.toUser}
         </Typography>
       </Grid>
-      <Grid item sx={{ maxHeight: "37em", overflowY: "scroll" }} width={"30%"}>
+      <Grid item sx={{ maxHeight: "37em", overflowY: "scroll" }}>
         {messages?.map((message, index) => (
-          <Card>
-            <Typography key={index}>{`${message.sendTime.toLocaleString()} - ${
-              message.fromUser
-            }: ${message.messageContent}`}</Typography>
+          <Card
+            sx={{
+              width: "max-content",
+              paddingInline: "2%",
+              marginLeft: message.fromUser === username ? "auto" : "",
+              backgroundColor:
+                message.fromUser === username ? "#5cb6ff" : "#f3f3f3",
+            }}
+          >
+            <Typography key={index}>{`${message.messageContent}`}</Typography>
+            <Typography
+              key={index}
+            >{`${message.sendTime.toLocaleString()}`}</Typography>
           </Card>
         ))}
       </Grid>
