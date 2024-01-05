@@ -5,9 +5,7 @@ import { socket } from "../utils/socket";
 import store from "../redux/store";
 import { useLocation } from "react-router-dom";
 import { getChatFromDB } from "../utils/chatUtils";
-import {
-  Send
-} from "@mui/icons-material";
+import { Send } from "@mui/icons-material";
 
 const ChatPage = () => {
   const [input, setInput] = useState<string>("");
@@ -51,15 +49,17 @@ const ChatPage = () => {
       setMessages([...messages, message]);
       socket.emit("send-message", message);
     }
-    setInput('');
+    setInput("");
   };
 
   return (
-    <Grid container direction={"column"} alignContent={'center'}>
+    <Grid container direction={"column"} alignContent={"center"} spacing={2}>
       <Grid item>
-        <Typography variant="h4" textAlign={'center'}>{location.state.toUser}</Typography>
+        <Typography variant="h4" textAlign={"center"}>
+          {location.state.toUser}
+        </Typography>
       </Grid>
-      <Grid item sx={{maxHeight: '37em', overflowY: 'scroll'}} width={'30%'}>
+      <Grid item sx={{ maxHeight: "37em", overflowY: "scroll" }} width={"30%"}>
         {messages?.map((message, index) => (
           <Card>
             <Typography key={index}>{`${message.sendTime.toLocaleString()} - ${
@@ -76,11 +76,18 @@ const ChatPage = () => {
           value={input}
           fullWidth
           onKeyDown={(e) => {
-            if(e.key === 'Enter'){
+            if (e.key === "Enter") {
               sendMessage();
-           }
+            }
           }}
-          InputProps={{endAdornment: <Button onClick={sendMessage}><Send/></Button>}}
+          placeholder="Send a message"
+          InputProps={{
+            endAdornment: (
+              <Button onClick={sendMessage}>
+                <Send />
+              </Button>
+            ),
+          }}
         />
       </Grid>
     </Grid>
