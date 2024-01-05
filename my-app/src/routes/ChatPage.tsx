@@ -59,9 +59,9 @@ const ChatPage = () => {
           {location.state.toUser}
         </Typography>
       </Grid>
-      <Grid item sx={{ maxHeight: "37em", overflowY: "scroll" }}>
+      <Grid item container sx={{ maxHeight: "37em", overflowY: "scroll" }} width={'50%'} spacing={3} flexDirection={'column'} flexWrap={'nowrap'}>
         {messages?.map((message, index) => (
-          <Card
+          <Grid item ><Card
             sx={{
               width: "max-content",
               paddingInline: "2%",
@@ -74,7 +74,7 @@ const ChatPage = () => {
             <Typography
               key={index}
             >{`${message.sendTime.toLocaleString()}`}</Typography>
-          </Card>
+          </Card></Grid>
         ))}
       </Grid>
       <Grid item>

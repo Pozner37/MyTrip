@@ -225,7 +225,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
         </Stack>
       </CardActions>
       <Collapse in={showComment} timeout="auto" unmountOnExit>
-        <CardContent>
+        <CardContent sx={{maxHeight: '30em', overflowY: 'auto'}}>
           {comments?.map((comment) => (
             <Comment comment={comment} />
           ))}
