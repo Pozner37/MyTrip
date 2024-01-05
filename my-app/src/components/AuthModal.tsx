@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Button, Modal, Box, Typography, Stack } from '@mui/material';
 import Login from './Login';
 import SignUp from './SignUp';
@@ -9,7 +9,7 @@ import { UserState, setShowAuthModal } from '../redux/reducers/UserReducer';
 
 const AuthModal = () => {
   const appProps = useSelector((state: UserState) => state);
-
+  const [errorLine, setErrorLine] = useState<string>()
   const [alreadyUser, setAlreadyUser] = useState<boolean>(true)
   const dispatch = useDispatch();
 
@@ -34,7 +34,8 @@ const AuthModal = () => {
         <Typography fontSize={25} textAlign={'center'}>
             {alreadyUser ? "Login" : "Sign Up"}
         </Typography>
-        {alreadyUser ? <Login closeModal={onClose} moveToSignUp={() => setAlreadyUser(false)}/> : <SignUp moveToLogin={()=>setAlreadyUser(true)}/>}
+        {alreadyUser ? <Login closeModal={onClose} moveToSignUp={() => setAlreadyUser(false)} setErrorLine={setErrorLine}/>
+         : <SignUp moveToLogin={()=>setAlreadyUser(true)} setErrorLine={setErrorLine}/>}
         <Stack display='flex' useFlexGap sx={{flexDirection:'row', paddingTop: 2}}>
         <GoogleLogin
             onSuccess={res=> res.credential && console.log(jwtDecode(res.credential))}
@@ -45,6 +46,7 @@ const AuthModal = () => {
             />
             <Button fullWidth variant="contained" color="success" onClick={()=> setAlreadyUser(value => !value)}>{alreadyUser ? 'New User' : 'Already User'}</Button>
             </Stack>
+            {errorLine && <Typography color='red' textAlign='center' fontWeight='bold'>{errorLine}</Typography>} 
         </Box>
     </Modal>
   );

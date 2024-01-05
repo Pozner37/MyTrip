@@ -35,6 +35,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import store from "../redux/store";
+import { useSelector } from "react-redux";
+import { UserState } from "../redux/reducers/UserReducer";
 
 interface PostProps {
   post: PostType;
@@ -50,8 +52,8 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(post.description);
   const [images, setImages] = useState([]);
-  const userName = store.getState().userName;
-  const isPostOwner = post.userName === userName;
+  const user = useSelector((state: UserState) => state.user);
+  const isPostOwner = post.userName === user?.userName;
 
   const onChange = (
     imageList: ImageListType,
@@ -149,7 +151,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
           >
             Show {commentCount} Comments
           </Button>
-          {userName && (
+          {user && (
             <>
               <Button
                 size="small"
@@ -224,7 +226,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
       </Collapse>
       <Collapse in={addComment} timeout="auto" unmountOnExit>
         <CardContent>
-          {userName && (
+          {user && (
             <FormControl sx={{ width: "100%" }} variant="outlined">
               <InputLabel htmlFor="comment-text">Add a comment</InputLabel>
               <OutlinedInput
@@ -238,11 +240,11 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
                     <IconButton
                       onClick={() => {
                         commentInput &&
-                          userName &&
+                        user &&
                           addCommentToPost({
                             commentContent: commentInput,
                             postId: post._id,
-                            user: userName,
+                            user: user.userName,
                           }).then(fetchComments);
                         handleExpandClick(addComment, setAddComment);
                       }}

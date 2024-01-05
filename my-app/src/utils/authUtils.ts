@@ -1,19 +1,14 @@
-import axios from "axios";
-import { User } from "../components/SignUp";
-
-interface LoginUserDto {
-    userName : string;
-    password : string;
-}
+import axios, { AxiosResponse } from "axios";
+import { User, LoginDto, BasicUserDto } from "../dtos/userDtos";
 
 export const register = async (data : User) => 
-    await axios.post('http://localhost:3000/auth/register', data);
+    await axios.post<User, AxiosResponse<{}>>('http://localhost:3000/auth/register', data);
 
-export const login = async (data : LoginUserDto) => 
-    await axios.post('http://localhost:3000/auth/login', data);
+export const login = async (data : LoginDto) => 
+    await axios.post<LoginDto, AxiosResponse<BasicUserDto>>('http://localhost:3000/auth/login', data);
 
 export const getUser = async () => 
-    await axios.get('http://localhost:3000/auth/user', {withCredentials : true});
+    await axios.get<{}, AxiosResponse<BasicUserDto>>('http://localhost:3000/auth/user', {withCredentials : true});
     
 export const logout = async () => 
-    await axios.post('http://localhost:3000/auth/logout', undefined, {withCredentials : true});
+    await axios.post<{}, AxiosResponse<{}>>('http://localhost:3000/auth/logout', undefined, {withCredentials : true});

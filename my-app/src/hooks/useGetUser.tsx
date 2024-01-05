@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { getUser } from "../utils/authUtils"
 import { useDispatch } from "react-redux"
-import { setUserName } from "../redux/reducers/UserReducer";
 
 const useGetUser = ()=> {
     const dispatch = useDispatch();
@@ -13,3 +12,7 @@ const useGetUser = ()=> {
 }
 
 export default useGetUser;
+
+function setUserName(userName: string): any {
+    throw new Error("Function not implemented.");
+}

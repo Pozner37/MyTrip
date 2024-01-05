@@ -9,11 +9,11 @@ import { UserState } from "../redux/reducers/UserReducer";
 
 const MyPostsPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
-  const userName = useSelector((state: UserState) => state.userName)
+  const user = useSelector((state: UserState) => state.user)
 
   const fetchPosts = () => {
-    if (userName) {
-      getPostsByUser(userName).then((res) => {
+    if (user) {
+      getPostsByUser(user.userName).then((res) => {
         return setPosts(res.data);
       });
     }
@@ -21,7 +21,7 @@ const MyPostsPage = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, [userName]);
+  }, [user]);
 
   return (
     <>

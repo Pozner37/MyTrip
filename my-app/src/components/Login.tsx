@@ -1,13 +1,15 @@
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Typography } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { login } from "../utils/authUtils";
 import EmailTextField from "./EmailTextField";
 import { useDispatch } from "react-redux";
-import { setUserName } from "../redux/reducers/UserReducer";
+import { setUser } from "../redux/reducers/UserReducer";
+import { AxiosError } from "axios";
 
 interface LoginModalProps {
     closeModal : () => void,
-    moveToSignUp : () => void
+    moveToSignUp : () => void,
+    setErrorLine : Dispatch<SetStateAction<string | undefined>>
 }
 
 const Login = (props : LoginModalProps) => {
@@ -19,16 +21,18 @@ const Login = (props : LoginModalProps) => {
     const dispatch = useDispatch();
 
     const handleLogin = async () => {
-        // Add your login logic here
         console.log('Logging in with:', { modalUserName, password });
         await login({userName: modalUserName, password : password}).then(res => {
             if (res.status === 200) {
                 console.log(res.data)
-                dispatch(setUserName(res.data.userName))
+                dispatch(setUser(res.data))
                 props.closeModal();
             }
-        }).catch(err=> {console.log(err)})
-      };
+        }).catch((err : AxiosError) => {
+            console.log(err);
+            props.setErrorLine(err.response?.data as string);
+        })
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();

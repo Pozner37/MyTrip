@@ -1,25 +1,19 @@
-import { Box, TextField, Button, Typography } from "@mui/material"
-import { useState } from "react"
+import { Box, TextField, Button } from "@mui/material"
+import { Dispatch, SetStateAction, useState } from "react"
 import EmailTextField from "./EmailTextField"
 import { register } from "../utils/authUtils"
 import { AxiosError } from "axios"
+import { User } from "../dtos/userDtos"
 
 interface SignUpModalProps {
-    moveToLogin : () => void
-}
-
-export interface User {
-    email : string,
-    userName : string,
-    password : string,
-    iconUrl : string
+    moveToLogin : () => void,
+    setErrorLine : Dispatch<SetStateAction<string | undefined>>
 }
 
 const SignUp = (props : SignUpModalProps) => {
     const [user, setUser] = useState<User>({email:'',iconUrl:'',password:'',userName:''})
     const [emailValidity, setEmailValidity] = useState<boolean>(false)
     const [confirmPassword, setConfirmPassword] = useState<string>()
-    const [errorLine, setErrorLine] = useState<string>()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -33,7 +27,7 @@ const SignUp = (props : SignUpModalProps) => {
                         console.log(res)
                     }
                 }
-            ).catch((err  : AxiosError)=> { console.log(err); setErrorLine(err.response?.data as string)})
+            ).catch((err : AxiosError)=> { console.log(err); props.setErrorLine(err.response?.data as string)})
         } else {
             console.log("something not valid")
         }
@@ -50,7 +44,6 @@ const SignUp = (props : SignUpModalProps) => {
         <TextField error={confirmPassword !== user.password} margin="normal" required fullWidth label="Confirm Password"
         type="password" autoComplete="current-password" value={confirmPassword}
         onChange={(e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setConfirmPassword(e.target.value)} />
-        {errorLine && <Typography color='red' textAlign='center' fontWeight='bold'>{errorLine}</Typography>}
         <Button type="submit" fullWidth variant="contained"> SignUp </Button>
     </Box>)
 }

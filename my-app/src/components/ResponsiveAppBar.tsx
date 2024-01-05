@@ -18,13 +18,12 @@ import {
   UserState,
   logoutUserName,
   setShowAuthModal,
-  setUserName,
 } from "../redux/reducers/UserReducer";
 import { logout } from "../utils/authUtils";
 
 const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const userName = useSelector((state: UserState) => state.userName);
+  const user = useSelector((state: UserState) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -73,7 +72,7 @@ const ResponsiveAppBar = () => {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
-            {userName && (
+            {user && (
               <Typography
                 sx={{
                   marginRight: "20px",
@@ -82,7 +81,7 @@ const ResponsiveAppBar = () => {
                   alignSelf: "center",
                 }}
               >
-                {userName}
+                {user.userName}
               </Typography>
             )}
             <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
@@ -105,7 +104,7 @@ const ResponsiveAppBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {store.getState().userName ? (
+                {user ? (
                   <>
                     <MenuItem>
                       <Typography>הפרופיל</Typography>
