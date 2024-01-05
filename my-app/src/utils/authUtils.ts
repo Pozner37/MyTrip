@@ -16,4 +16,4 @@ export const getUser = async () =>
     await axios.get('http://localhost:3000/auth/user', {withCredentials : true});
     
 export const logout = async () => 
-    await axios.post('http://localhost:3000/auth/logout', {withCredentials : true});
+    await axios.post('http://localhost:3000/auth/logout', undefined, {withCredentials : true});
