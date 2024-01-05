@@ -1,10 +1,13 @@
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, Card, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { MessageType } from "../components";
 import { socket } from "../utils/socket";
 import store from "../redux/store";
 import { useLocation } from "react-router-dom";
 import { getChatFromDB } from "../utils/chatUtils";
+import {
+  Send
+} from "@mui/icons-material";
 
 const ChatPage = () => {
   const [input, setInput] = useState<string>("");
@@ -48,24 +51,37 @@ const ChatPage = () => {
       setMessages([...messages, message]);
       socket.emit("send-message", message);
     }
+    setInput('');
   };
 
   return (
-    <Grid container>
+    <Grid container direction={"column"} alignContent={'center'}>
+      <Grid item>
+        <Typography variant="h4" textAlign={'center'}>{location.state.toUser}</Typography>
+      </Grid>
+      <Grid item sx={{maxHeight: '37em', overflowY: 'scroll'}} width={'30%'}>
+        {messages?.map((message, index) => (
+          <Card>
+            <Typography key={index}>{`${message.sendTime.toLocaleString()} - ${
+              message.fromUser
+            }: ${message.messageContent}`}</Typography>
+          </Card>
+        ))}
+      </Grid>
       <Grid item>
         <TextField
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setInput(event.target.value);
           }}
+          value={input}
+          fullWidth
+          onKeyDown={(e) => {
+            if(e.key === 'Enter'){
+              sendMessage();
+           }
+          }}
+          InputProps={{endAdornment: <Button onClick={sendMessage}><Send/></Button>}}
         />
-        <Button onClick={sendMessage}>Send</Button>
-      </Grid>
-      <Grid item>
-        {messages?.map((message, index) => (
-          <Typography key={index}>{`${message.sendTime.toLocaleString()} - ${
-            message.fromUser
-          }: ${message.messageContent}`}</Typography>
-        ))}
       </Grid>
     </Grid>
   );
