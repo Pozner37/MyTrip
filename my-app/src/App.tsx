@@ -12,7 +12,7 @@ import ChatPage from "./routes/ChatPage";
 function App() {
   return (
     <Provider store={store}>
-      <GoogleOAuthProvider clientId="999188403168-50hsegkfkhput286r1ie6q208balov63.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="key">
         <BrowserRouter>
           <ResponsiveAppBar />
           <Routes>
