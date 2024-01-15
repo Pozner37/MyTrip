@@ -1,10 +1,6 @@
 import { Box, TextField, Button } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
-import { login } from "../utils/authUtils";
-import { useDispatch } from "react-redux";
-import { setUser } from "../redux/reducers/UserReducer";
-import { AxiosError } from "axios";
-import Cookies from 'universal-cookie';
+import useAuth from "../hooks/useAuth";
 
 interface LoginModalProps {
     closeModal : () => void,
@@ -16,23 +12,18 @@ const Login = (props : LoginModalProps) => {
 
     const [password, setPassword] = useState<string>('');
     const [modalUserName, setModalUserName] = useState<string>('')
-    const dispatch = useDispatch();
+    const { login } = useAuth();
 
     const handleLogin = async () => {
-        console.log('Logging in with:', { modalUserName, password });
+        props.setErrorLine(undefined)
         await login({userName: modalUserName, password : password}).then(res => {
             if (res.status === 200) {
-                console.log(res.data)
-                const cookies = new Cookies();
-                cookies.set('refresh_token', res.data.refreshToken)
-                cookies.set('access_token', res.data.accessToken)
-                dispatch(setUser(res.data))
                 props.closeModal();
             }
-        }).catch((err : AxiosError) => {
-            console.log(err);
-            props.setErrorLine(err.response?.data as string);
-        })
+            else {
+                props.setErrorLine(res.data as string);
+            }
+        });
     };
 
     const handleSubmit = (e) => {

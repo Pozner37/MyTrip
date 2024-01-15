@@ -3,27 +3,26 @@ import { Button, Modal, Box, Typography, Stack } from '@mui/material';
 import Login from './Login';
 import SignUp from './SignUp';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode'
 import { useDispatch, useSelector } from 'react-redux';
-import { UserState, setShowAuthModal, setUser } from '../redux/reducers/UserReducer';
-import { googleLogin } from '../utils/authUtils';
+import { UserState, setShowAuthModal } from '../redux/reducers/UserReducer';
+import useAuth from '../hooks/useAuth';
 
 const AuthModal = () => {
   const appProps = useSelector((state: UserState) => state);
   const [errorLine, setErrorLine] = useState<string>()
   const [alreadyUser, setAlreadyUser] = useState<boolean>(true)
   const dispatch = useDispatch();
+  const { googleLogin } = useAuth();
 
   const onClose = () => dispatch(setShowAuthModal(false))
 
   const handleGoogleLogin = async (res : CredentialResponse) => {
+    setErrorLine(undefined);
     if(res.credential)
     {
-        console.log(jwtDecode(res.credential))
         await googleLogin(res.credential).then(res => {
             if (res.status === 200) {
                 onClose();
-                dispatch(setUser(res.data))
             }
         })
     }

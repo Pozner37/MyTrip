@@ -14,16 +14,16 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   UserState,
-  logoutUserName,
   setShowAuthModal,
 } from "../redux/reducers/UserReducer";
-import { logout } from "../utils/authUtils";
+import useAuth from "../hooks/useAuth";
 
 const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const user = useSelector((state: UserState) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { logout } = useAuth();
 
   const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget);
@@ -36,7 +36,7 @@ const ResponsiveAppBar = () => {
   const handleLogout = async () => {
     await logout().then(res => {
       if (res.status === 200){
-        dispatch(logoutUserName())
+        handleCloseUserMenu();
       }
     })
   };

@@ -1,9 +1,8 @@
 import { Box, TextField, Button } from "@mui/material"
 import { Dispatch, SetStateAction, useState } from "react"
 import EmailTextField from "./EmailTextField"
-import { register } from "../utils/authUtils"
-import { AxiosError } from "axios"
 import { User } from "../dtos/userDtos"
+import useAuth from "../hooks/useAuth"
 
 interface SignUpModalProps {
     moveToLogin : () => void,
@@ -15,19 +14,22 @@ const SignUp = (props : SignUpModalProps) => {
     const [emailValidity, setEmailValidity] = useState<boolean>(false)
     const [confirmPassword, setConfirmPassword] = useState<string>()
 
+    const {register} = useAuth();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (user && emailValidity && confirmPassword === user.password){
+        if (user && emailValidity && confirmPassword === user.password) {
+            props.setErrorLine(undefined)
             await register(user).then(
                 res => {
                     if (res.status === 201) {
-                        console.log(res.data)
                         props.moveToLogin()
-                    } else {
-                        console.log(res)
+                    } 
+                    else {
+                        props.setErrorLine(res.data as string)
                     }
                 }
-            ).catch((err : AxiosError)=> { console.log(err); props.setErrorLine(err.response?.data as string)})
+            )
         } else {
             console.log("something not valid")
         }

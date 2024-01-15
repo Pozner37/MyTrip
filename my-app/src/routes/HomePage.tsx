@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { BaseCountry } from "../components";
 import { getAllBaseCountries } from "../utils/countriesUtils";
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
-import useGetUser from "../hooks/useGetUser";
 
 const countriesPanelStyle: SxProps = {
   width: "80%",
