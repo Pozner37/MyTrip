@@ -1,16 +1,19 @@
 import axios, { AxiosResponse } from "axios";
 import { User, LoginDto, BasicUserDto } from "../dtos/userDtos";
 
+const path = 'http://10.0.0.21:3000'
+
 export const register = async (data : User) => 
-    await axios.post<User, AxiosResponse<{}>>('http://localhost:3000/auth/register', data);
+    await axios.post<User, AxiosResponse<{}>>(`${path}/auth/register`, data);
 
 export const login = async (data : LoginDto) => 
-    await axios.post<LoginDto, AxiosResponse<BasicUserDto>>('http://localhost:3000/auth/login', data);
+    await axios.post<LoginDto, AxiosResponse<BasicUserDto>>(`${path}/auth/login`, data);
 
 export const getUser = async () => 
-    await axios.get<{}, AxiosResponse<BasicUserDto>>('http://localhost:3000/auth/user', {withCredentials : true});
+    await axios.get<{}, AxiosResponse<BasicUserDto>>(`${path}/auth/user`, {withCredentials : true});
     
 export const logout = async () => 
-    await axios.post<{}, AxiosResponse<{}>>('http://localhost:3000/auth/logout', undefined, {withCredentials : true});
+    await axios.post<{}, AxiosResponse<{}>>(`${path}/auth/logout`, undefined, {withCredentials : true});
+    
 export const googleLogin = async (token : string) => 
-    await axios.post<{token : string}, AxiosResponse<BasicUserDto>>('http://localhost:3000/auth/google', {token : token});
+    await axios.post<{token : string}, AxiosResponse<BasicUserDto>>(`${path}/auth/google`, {token : token});
