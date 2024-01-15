@@ -11,7 +11,7 @@ const ChatPage = () => {
   const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const location = useLocation();
-  const username = store.getState().userName;
+  const username = store.getState().user?.userName;
 
   socket.on("receive-message", (message) => {
     if (message.fromUser === location.state.toUser) {

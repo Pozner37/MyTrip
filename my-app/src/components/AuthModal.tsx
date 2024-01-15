@@ -1,19 +1,32 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Button, Modal, Box, Typography, Stack } from '@mui/material';
 import Login from './Login';
 import SignUp from './SignUp';
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode'
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserState, setShowAuthModal } from '../redux/reducers/UserReducer';
+import useAuth from '../hooks/useAuth';
 
 const AuthModal = () => {
   const appProps = useSelector((state: UserState) => state);
-
+  const [errorLine, setErrorLine] = useState<string>()
   const [alreadyUser, setAlreadyUser] = useState<boolean>(true)
   const dispatch = useDispatch();
+  const { googleLogin } = useAuth();
 
   const onClose = () => dispatch(setShowAuthModal(false))
+
+  const handleGoogleLogin = async (res : CredentialResponse) => {
+    setErrorLine(undefined);
+    if(res.credential)
+    {
+        await googleLogin(res.credential).then(res => {
+            if (res.status === 200) {
+                onClose();
+            }
+        })
+    }
+  }
 
   return (
     <Modal open={appProps.showAuthModal} onClose={onClose}>
@@ -34,10 +47,11 @@ const AuthModal = () => {
         <Typography fontSize={25} textAlign={'center'}>
             {alreadyUser ? "Login" : "Sign Up"}
         </Typography>
-        {alreadyUser ? <Login closeModal={onClose} moveToSignUp={() => setAlreadyUser(false)}/> : <SignUp moveToLogin={()=>setAlreadyUser(true)}/>}
+        {alreadyUser ? <Login closeModal={onClose} moveToSignUp={() => setAlreadyUser(false)} setErrorLine={setErrorLine}/>
+         : <SignUp moveToLogin={()=>setAlreadyUser(true)} setErrorLine={setErrorLine}/>}
         <Stack display='flex' useFlexGap sx={{flexDirection:'row', paddingTop: 2}}>
         <GoogleLogin
-            onSuccess={res=> res.credential && console.log(jwtDecode(res.credential))}
+            onSuccess={handleGoogleLogin}
             onError={() => {
                 console.log('Login Failed');
             }}
@@ -45,6 +59,7 @@ const AuthModal = () => {
             />
             <Button fullWidth variant="contained" color="success" onClick={()=> setAlreadyUser(value => !value)}>{alreadyUser ? 'New User' : 'Already User'}</Button>
             </Stack>
+            {errorLine && <Typography color='red' textAlign='center' fontWeight='bold'>{errorLine}</Typography>} 
         </Box>
     </Modal>
   );
