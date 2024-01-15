@@ -4,6 +4,7 @@ import { login } from "../utils/authUtils";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/reducers/UserReducer";
 import { AxiosError } from "axios";
+import Cookies from 'universal-cookie';
 
 interface LoginModalProps {
     closeModal : () => void,
@@ -22,6 +23,9 @@ const Login = (props : LoginModalProps) => {
         await login({userName: modalUserName, password : password}).then(res => {
             if (res.status === 200) {
                 console.log(res.data)
+                const cookies = new Cookies();
+                cookies.set('refresh_token', res.data.refreshToken)
+                cookies.set('access_token', res.data.accessToken)
                 dispatch(setUser(res.data))
                 props.closeModal();
             }
@@ -33,8 +37,7 @@ const Login = (props : LoginModalProps) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-       // emailValidity && handleLogin();
-       handleLogin();
+        handleLogin();
     }
 
     return (

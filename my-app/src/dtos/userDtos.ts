@@ -7,7 +7,9 @@ interface User {
 
 interface BasicUserDto {
     userName : string,
-    iconUrl : string
+    iconUrl : string,
+    refreshToken : string,
+    accessToken : string
 }
 
 interface LoginDto {

@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { User, LoginDto, BasicUserDto } from "../dtos/userDtos";
 
-const path = 'http://10.0.0.21:3000'
+const path = 'http://localhost:3000'
 
 export const register = async (data : User) => 
     await axios.post<User, AxiosResponse<{}>>(`${path}/auth/register`, data);
