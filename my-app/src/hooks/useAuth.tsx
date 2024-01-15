@@ -30,8 +30,8 @@ const useAuth = () => {
             if (res.status === 200) {
                 console.log(`${res.data} login successfuly`)
                 const cookies = new Cookies();
-                cookies.set('refresh_token', res.data.refreshToken)
-                cookies.set('access_token', res.data.accessToken)
+                cookies.set('refresh_token', res.data.refreshToken, {path:'/'})
+                cookies.set('access_token', res.data.accessToken, {path:'/'})
                 dispatch(setUser(res.data))
             }
             return res;
@@ -46,6 +46,7 @@ const useAuth = () => {
             if (res.status === 200){
                 console.log('logout successfuly')
                 dispatch(logoutUserName())
+                return res;
             }
         }).catch(err => {
             console.error(err);

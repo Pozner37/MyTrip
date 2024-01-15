@@ -6,7 +6,7 @@ import AppView from "./components/AppView";
 function App() {
   return (
     <Provider store={store}>
-    <GoogleOAuthProvider clientId="my-key">
+    <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID ?? ''}>
         <AppView/>
     </GoogleOAuthProvider>
     </Provider>
