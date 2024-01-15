@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CommentType, EditPostType, PostType } from "../components";
 
-interface ApiResponse {
+export interface ApiResponse {
   data: PostType[];
   status: number;
 }

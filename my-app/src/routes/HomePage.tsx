@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { BaseCountry } from "../components";
 import { getAllBaseCountries } from "../utils/countriesUtils";
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
+import { io } from "socket.io-client";
 
 const countriesPanelStyle: SxProps = {
   width: "80%",
@@ -22,13 +23,12 @@ const searchFilter: SxProps = {
   marginBottom: 2
 };
 
-
 const shuffleArray = (array : Array<any>) => array.slice().sort(() => Math.random() - 0.5);
 
 const HomePage = () => {
-  const [countries, setCountries] = useState<Array<BaseCountry>>([])
-  const [filteredCountries, setFilteredCountries] = useState<Array<BaseCountry>>(countries)
-  const [searchText, setSearchText] = useState<string>("")
+  const [countries, setCountries] = useState<Array<BaseCountry>>([]);
+  const [filteredCountries, setFilteredCountries] = useState<Array<BaseCountry>>(countries);
+  const [searchText, setSearchText] = useState<string>("");
 
   useEffect(()=>{
     const fetchCountries = async () => {

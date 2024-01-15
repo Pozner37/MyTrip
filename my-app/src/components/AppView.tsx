@@ -5,6 +5,7 @@ import MyPostsPage from "../routes/MyPostsPage";
 import AuthModal from "./AuthModal";
 import ResponsiveAppBar from "./ResponsiveAppBar";
 import useGetUser from "../hooks/useGetUser";
+import ChatPage from "../routes/ChatPage";
 
 const AppView = () => {
     useGetUser();
@@ -13,12 +14,13 @@ const AppView = () => {
         <>
             <BrowserRouter>
                 <ResponsiveAppBar/>
-                    <Routes>
-                        <Route path="/" element={<HomePage />}></Route>
-                        <Route path="/country/:name" element={<CountryPage/>}></Route>
-                        <Route path="/myposts" element={<MyPostsPage/>}></Route>
-                    </Routes>
-                </BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<HomePage />}></Route>
+                    <Route path="/country/:name" element={<CountryPage/>}></Route>
+                    <Route path="/myposts" element={<MyPostsPage/>}></Route>
+                    <Route path="/chat" element={<ChatPage />}></Route>
+                </Routes>
+            </BrowserRouter>
             <AuthModal/>
         </>
     )
