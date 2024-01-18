@@ -104,7 +104,10 @@ const ResponsiveAppBar = () => {
               >
                 {user ? (
                   <>
-                    <MenuItem>
+                    <MenuItem  onClick={() => {
+                        handleCloseUserMenu();
+                        navigate('/myProfile');
+                      }}>
                       <Typography>הפרופיל</Typography>
                     </MenuItem>
                     <MenuItem

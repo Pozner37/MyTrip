@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { BasicUserDto } from '../../dtos/userDtos';
+import { BasicUserDto, User } from '../../dtos/userDtos';
 
 export interface UserState {
     showAuthModal : boolean,

@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { getUserRequest } from "../utils/authUtils"
+import { getUserRequest } from "../utils/userUtils"
 import { useDispatch } from "react-redux"
 import { setUser } from "../redux/reducers/UserReducer";
 

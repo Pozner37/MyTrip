@@ -66,7 +66,6 @@ const useAuth = () => {
             return err.response;
          })
     }
-
     return { register, login, logout, googleLogin }
 }
 

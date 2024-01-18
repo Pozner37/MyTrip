@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { PostType } from "../components";
 import { useSelector } from "react-redux";
 import { UserState } from "../redux/reducers/UserReducer";
+import ProfileCard from "../components/UserCard";
+import UserCard from "../components/UserCard";
 
 const MyPostsPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -24,6 +26,7 @@ const MyPostsPage = () => {
 
   return (
     <>
+      {user && <UserCard {...user}/>}
       <Stack spacing={2} alignItems="center" sx={{ padding: "4%" }}>
         {(posts.length &&
           posts.map((post) => (

@@ -28,7 +28,7 @@ import {
 } from "../utils/countriesUtils";
 import CountryInfoChip from "./CountryInfoChip";
 
-const CountryCardStyle: SxProps = {
+export const CardStyle: SxProps = {
   marginTop: 10,
   marginLeft: 5,
   padding: 1,
@@ -66,7 +66,7 @@ const CountryCard = ({ name }: CountryCardProps) => {
   return (
     <>
       {country && (
-        <Card variant="outlined" sx={CountryCardStyle}>
+        <Card variant="outlined" sx={CardStyle}>
           <CardMedia
             component="img"
             height="150"
