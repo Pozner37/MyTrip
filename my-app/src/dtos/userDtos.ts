@@ -6,9 +6,7 @@ interface User {
     isGoogleLogin? : boolean
 }
 
-interface BasicUserDto {
-    userName : string,
-    iconUrl : string,
+interface BasicUserDto extends Omit<User, 'password'>{
     refreshToken : string,
     accessToken : string
 }

@@ -8,7 +8,7 @@ import { Edit } from "@mui/icons-material";
 import { blue } from "@mui/material/colors";
 import { useNavigate } from "react-router";
 
-const UserCard = (basicUser : User) => {
+const UserCard = (basicUser : BasicUserDto) => {
     const myUser = useSelector((state: UserState) => state.user);
     const isMyUser = basicUser.userName === myUser?.userName;
     const navigate = useNavigate();

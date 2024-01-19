@@ -3,7 +3,7 @@ import { BasicUserDto, User } from '../../dtos/userDtos';
 
 export interface UserState {
     showAuthModal : boolean,
-    user : User | undefined
+    user : BasicUserDto | undefined
 }
 
 const initialState : UserState = {
@@ -18,7 +18,7 @@ export const userSlice = createSlice({
         setShowAuthModal : (state, action : PayloadAction<boolean>)=>{
             state.showAuthModal = action.payload;
         },
-        setUser : (state, action : PayloadAction<User>) => {
+        setUser : (state, action : PayloadAction<BasicUserDto>) => {
             state.user = action.payload;
         },
         logoutUserName : (state) => {

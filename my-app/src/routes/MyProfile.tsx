@@ -1,6 +1,6 @@
 import { Avatar, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Stack, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { User } from "../dtos/userDtos";
+import { BasicUserDto, User } from "../dtos/userDtos";
 import { getUserProfilePicture } from "../utils/getUserProfilePicture";
 import CountryInfoChip from "../components/CountryInfoChip";
 import { AccountCircle, AlternateEmail, Edit, Password, Person, Save } from "@mui/icons-material";
@@ -17,7 +17,7 @@ import ChangePassword from "../components/ChangePassword";
 type editProfileProperties = 'UserName' | 'Picture' | 'Password'
 
 const MyProfile = () => {
-    const [myUser, setMyUser] = useState<User>()
+    const [myUser, setMyUser] = useState<BasicUserDto>()
     const [editedProperty, setEditedProperty] = useState<editProfileProperties | undefined>(undefined)
     const user = useSelector((state: UserState) => state.user);
     const {updateUser} = useAuth();
