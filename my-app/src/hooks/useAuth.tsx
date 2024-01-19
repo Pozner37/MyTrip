@@ -59,8 +59,12 @@ const useAuth = () => {
         return await googleLoginRequest(token).then(res => {
             if (res.status === 200) {
                 console.log(`${res.data} login successfuly`)
+                const cookies = new Cookies();
+                cookies.set('refresh_token', res.data.refreshToken, {path:'/'})
+                cookies.set('access_token', res.data.accessToken, {path:'/'})
                 dispatch(setUser(res.data))
             }
+            return res;
         }).catch(err => {
             console.error(err);
             return err.response;

@@ -9,7 +9,6 @@ const useUpdateUser = () => {
 
     const updateUserName = async (userName : string) : Promise<AxiosResponse<BasicUserDto | string>> => {
         return await updateUserNameRequest(userName).then(res => {
-            debugger
             if (res.status === 200) {
                 console.log(`${res.data} update userName successfuly`)
                 dispatch(setUser(res.data))
@@ -22,7 +21,6 @@ const useUpdateUser = () => {
     }
 
     const updatePassword = async (passwords : ChangePasswordDto) : Promise<AxiosResponse<BasicUserDto | string>> => {
-        debugger
         return await updatePasswordRequest(passwords).then(res => {
             if (res.status === 200) {
                 console.log(`${res.data} update userName successfuly`)

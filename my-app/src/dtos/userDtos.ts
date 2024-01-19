@@ -2,7 +2,7 @@ interface User {
     email : string,
     userName : string,
     password : string,
-    iconUrl : string,
+    image : string,
     isGoogleLogin? : boolean
 }
 

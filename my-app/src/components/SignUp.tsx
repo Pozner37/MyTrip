@@ -3,6 +3,8 @@ import { Dispatch, SetStateAction, useState } from "react"
 import EmailTextField from "./EmailTextField"
 import { User } from "../dtos/userDtos"
 import useAuth from "../hooks/useAuth"
+import ProfilePictureUpload from "./ProfilePictureUpload"
+import { getUserProfilePicture } from "../utils/getUserProfilePicture"
 
 interface SignUpModalProps {
     moveToLogin : () => void,
@@ -10,7 +12,7 @@ interface SignUpModalProps {
 }
 
 const SignUp = (props : SignUpModalProps) => {
-    const [user, setUser] = useState<User>({email:'',iconUrl:'',password:'',userName:''})
+    const [user, setUser] = useState<User>({email:'',image:getUserProfilePicture(),password:'',userName:''})
     const [emailValidity, setEmailValidity] = useState<boolean>(false)
     const [confirmPassword, setConfirmPassword] = useState<string>()
 
@@ -36,7 +38,8 @@ const SignUp = (props : SignUpModalProps) => {
     }
 
     return (
-        <Box component="form" onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit} textAlign='center'>
+        <ProfilePictureUpload image={user.image} setImage={(image : string) => setUser(user => ({...user, image : image}))} defaultImage={getUserProfilePicture()}/>
         <EmailTextField setEmail={(email : string) => setUser((user) => ({...user, email : email}))} setValidity={setEmailValidity}/>
         <TextField required fullWidth autoComplete="userName" label="User Name" value={user.userName}
          onChange={(e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setUser((user : User) => ({...user, userName : e.target.value}))}/>

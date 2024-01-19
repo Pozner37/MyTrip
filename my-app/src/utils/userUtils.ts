@@ -10,3 +10,6 @@ export const updateUserNameRequest = async (userName : string) =>
 
 export const updatePasswordRequest = async (passwords : ChangePasswordDto) => 
     await axios.post<ChangePasswordDto, AxiosResponse<BasicUserDto>>(`${path}/user/password`, passwords, { withCredentials : true});
+
+export const updateProfilePictureRequest = async (picture : string) => 
+    await axios.post<{picture : string}, AxiosResponse<BasicUserDto>>(`${path}/user/picture`, {picture : picture}, { withCredentials : true});
