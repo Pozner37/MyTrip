@@ -1,17 +1,11 @@
-import { Avatar, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Stack, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Divider, IconButton, List, Stack, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { BasicUserDto, User } from "../dtos/userDtos";
+import { BasicUserDto } from "../dtos/userDtos";
 import { getUserProfilePicture } from "../utils/getUserProfilePicture";
-import CountryInfoChip from "../components/CountryInfoChip";
-import { AccountCircle, AlternateEmail, Edit, Password, Person, Save } from "@mui/icons-material";
-import { blue } from "@mui/material/colors";
+import { AlternateEmail, Edit, Password, Person, Save } from "@mui/icons-material";
 import ProfileListItem from "../components/ProfileListItem";
-import e from "express";
-import store from "../redux/store";
 import { useSelector } from "react-redux";
 import { UserState } from "../redux/reducers/UserReducer";
-import useAuth from "../hooks/useAuth";
-import { fontSize } from "@mui/system";
 import ChangePassword from "../components/ChangePassword";
 import useUpdateUser from "../hooks/useUpdateUser";
 import { AxiosResponse } from "axios";
@@ -82,14 +76,6 @@ const MyProfile = () => {
                 </ProfileListItem>
 }
             </List>
-        {/* <Stack sx={{display:'flex', flexDirection:'column', alignItems:'center', paddingTop:10}}>
-            <Avatar sx={{height:250, width:250}} src={getUserProfilePicture()} />
-            {/* <Typography fontSize={30} fontWeight="bold">{myUser.userName}</Typography>
-            <Typography>{myUser.email}</Typography>
-            <Typography>{myUser.password}</Typography>
-            <Typography>{myUser.userName}</Typography>
-            <CountryInfoChip sx={{fontSize:30, width:'max-content'}} icon={<AccountCircle/>} label={myUser.userName}/>
-        </Stack> */}
         </Stack>
     }
     </>
