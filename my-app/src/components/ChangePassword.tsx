@@ -1,10 +1,10 @@
 import { Box, Button, TextField } from "@mui/material";
-import { User } from "../dtos/userDtos";
+import { ChangePasswordDto, User } from "../dtos/userDtos";
 import { setUser } from "../redux/reducers/UserReducer";
 import { useState } from "react";
 
 interface ChangePasswordProps {
-    onSubmit : (password  : string) => void
+    onSubmit : (passwords : ChangePasswordDto) => void
 }
 
 const ChangePassword = (props : ChangePasswordProps) => {
@@ -14,8 +14,11 @@ const ChangePassword = (props : ChangePasswordProps) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (newPassword && confirmNewPassword === newPassword) {
-            props.onSubmit(newPassword)
+        if (oldPassword && newPassword && confirmNewPassword === newPassword) {
+            props.onSubmit({
+                oldPassword : oldPassword,
+                newPassword : newPassword
+            })
         }
     }
 

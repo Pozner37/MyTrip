@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { googleLoginRequest, loginRequest, logoutRequest, registerRequest, updateUserRequest } from "../utils/authUtils";
+import { googleLoginRequest, loginRequest, logoutRequest, registerRequest } from "../utils/authUtils";
 import { logoutUserName, setUser } from "../redux/reducers/UserReducer";
 import Cookies from "universal-cookie";
 import { BasicUserDto, LoginDto, User } from "../dtos/userDtos";
@@ -66,22 +66,7 @@ const useAuth = () => {
             return err.response;
          })
     }
-
-    const updateUser = async (user : User) => {
-        return await updateUserRequest(user).then(res => {
-            debugger
-            if (res.status === 200) {
-                console.log(`${res.data} update successfuly`)
-                dispatch(setUser(res.data))
-            }
-            return res;
-        }).catch(err => {
-            console.error(err);
-            return err.response;
-         })
-    }
-
-    return { register, login, logout, googleLogin, updateUser }
+    return { register, login, logout, googleLogin }
 }
 
 export default useAuth;

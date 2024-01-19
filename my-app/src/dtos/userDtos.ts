@@ -6,9 +6,11 @@ interface User {
     isGoogleLogin? : boolean
 }
 
-interface BasicUserDto extends Omit<User, 'password'>{
-    refreshToken : string,
-    accessToken : string
+interface BasicUserDto extends Omit<User, 'password'>, CookiesProps {}
+
+interface CookiesProps {
+    accessToken : string,
+    refreshToken : string
 }
 
 interface LoginDto {
@@ -16,4 +18,9 @@ interface LoginDto {
     password : string;
 }
 
-export type { LoginDto, User, BasicUserDto}
+interface ChangePasswordDto {
+    oldPassword : string;
+    newPassword : string;
+}
+
+export type { LoginDto, User, BasicUserDto, ChangePasswordDto}

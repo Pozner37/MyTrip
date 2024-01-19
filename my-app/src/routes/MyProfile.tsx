@@ -13,6 +13,8 @@ import { UserState } from "../redux/reducers/UserReducer";
 import useAuth from "../hooks/useAuth";
 import { fontSize } from "@mui/system";
 import ChangePassword from "../components/ChangePassword";
+import useUpdateUser from "../hooks/useUpdateUser";
+import { AxiosResponse } from "axios";
 
 type editProfileProperties = 'UserName' | 'Picture' | 'Password'
 
@@ -20,29 +22,25 @@ const MyProfile = () => {
     const [myUser, setMyUser] = useState<BasicUserDto>()
     const [editedProperty, setEditedProperty] = useState<editProfileProperties | undefined>(undefined)
     const user = useSelector((state: UserState) => state.user);
-    const {updateUser} = useAuth();
+    const { updateUserName, updatePassword} = useUpdateUser();
+
+    const saveUserFuncRecord : Record<editProfileProperties, (any) => Promise<AxiosResponse<BasicUserDto | string>>> = {
+        Password : updatePassword,
+        UserName : updateUserName,
+        Picture : updatePassword
+    }
 
     useEffect(() => setMyUser(user), [user])
 
-    const saveUser = async () => {
-        if(myUser) {
-        return await updateUser(myUser).then(res => {
+    const saveUser = async (props : any) => {
+        if(myUser && editedProperty) {
+        return await saveUserFuncRecord[editedProperty](props).then(res => {
             if(res.status === 200){
                 setEditedProperty(undefined)
             }
             return res;
         }).catch((err: any) => err.response)
     }
-    }
-
-    const saveNewPassword = async (password : string) => {
-        debugger
-        if(myUser){
-        setMyUser({...myUser, password: password})
-        await saveUser().then(res => {
-            if(res.status === 200) setEditedProperty(undefined)
-        })
-        }
     }
 
     return( 
@@ -57,7 +55,7 @@ const MyProfile = () => {
                 }
                 secondaryAction={
                     <IconButton edge="end" aria-label="delete" onClick={() => {
-                        editedProperty === 'UserName' ? saveUser()
+                        editedProperty === 'UserName' ? saveUser(myUser.userName)
                          :  setEditedProperty('UserName');
                         }}>
                       {editedProperty === 'UserName' ? <Save/> : <Edit />}
@@ -77,7 +75,7 @@ const MyProfile = () => {
                <ProfileListItem icon={<Password sx={{width:50, height:50}}/>}
                listItemTextProps={{sx:{textAlign:'center'}}}>
                 { editedProperty === 'Password' ? 
-                <ChangePassword onSubmit={saveNewPassword}/>
+                <ChangePassword onSubmit={saveUser}/>
                 :
                 <Button variant="contained" onClick={() => setEditedProperty('Password')}>Change Password</Button>
                 }
