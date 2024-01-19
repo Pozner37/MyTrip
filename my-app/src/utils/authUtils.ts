@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { User, LoginDto, BasicUserDto } from "../dtos/userDtos";
 
-export const path = 'http://localhost:3000'
+const path = process.env.REACT_APP_SERVER_PATH;
 
 export const registerRequest = async (data : User) => 
     await axios.post<User, AxiosResponse<{}>>(`${path}/auth/register`, data);

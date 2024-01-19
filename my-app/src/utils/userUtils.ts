@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
-import { BasicUserDto, ChangePasswordDto, User } from "../dtos/userDtos";
-import { path } from "./authUtils";
+import { BasicUserDto, ChangePasswordDto } from "../dtos/userDtos";
+
+const path = process.env.REACT_APP_SERVER_PATH;
 
 export const getUserRequest = async () => 
     await axios.get<{}, AxiosResponse<BasicUserDto>>(`${path}/user`, { withCredentials : true});
