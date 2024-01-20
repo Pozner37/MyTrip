@@ -17,6 +17,7 @@ export interface PostType {
     description: string;
     userName: string;
     country: string;
+    image: string;
 }
 
 export interface EditPostType {
@@ -24,6 +25,7 @@ export interface EditPostType {
     description: string;
     userName: string;
     country: string;
+    image: string;
 }
 
 export interface CommentType {

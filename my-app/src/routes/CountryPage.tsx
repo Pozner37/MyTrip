@@ -48,7 +48,7 @@ const CountryPage = () => {
   const fetchPosts = () => {
     if (name) {
       getPostsByCountry(name).then((res) => {
-        return setPosts(res.data);
+        return setPosts(res?.data);
       });
     }
   };
@@ -140,7 +140,7 @@ const CountryPage = () => {
               )}
             </ReactImageUploading>
           </Stack>
-          <Button
+          <Button 
             onClick={() => {
               addNewPost();
               setOpenModal(false);
