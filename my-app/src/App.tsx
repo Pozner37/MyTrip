@@ -1,29 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ResponsiveAppBar from "./components/ResponsiveAppBar";
-import HomePage from "./routes/HomePage";
-import CountryPage from "./routes/CountryPage";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import AuthModal from "./components/AuthModal";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import MyPostsPage from "./routes/MyPostsPage";
-import ChatPage from "./routes/ChatPage";
+import AppView from "./components/AppView";
 
 function App() {
   return (
     <Provider store={store}>
-      <GoogleOAuthProvider clientId="key">
-        <BrowserRouter>
-          <ResponsiveAppBar />
-          <Routes>
-            <Route path="/" element={<HomePage />}></Route>
-            <Route path="/country/:name" element={<CountryPage />}></Route>
-            <Route path="/myposts" element={<MyPostsPage />}></Route>
-            <Route path="/chat" element={<ChatPage />}></Route>
-          </Routes>
-        </BrowserRouter>
-        <AuthModal />
-      </GoogleOAuthProvider>
+    <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID ?? ''}>
+        <AppView/>
+    </GoogleOAuthProvider>
     </Provider>
   );
 }

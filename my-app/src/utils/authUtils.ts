@@ -1,13 +1,16 @@
-import axios from "axios";
-import { User } from "../components/SignUp";
+import axios, { AxiosResponse } from "axios";
+import { User, LoginDto, BasicUserDto } from "../dtos/userDtos";
 
-interface LoginUserDto {
-    userName : string;
-    password : string;
-}
+export const path = 'http://localhost:3000'
 
-export const register = async (data : User) => 
-    await axios.post('http://localhost:5000/auth/register', data);
+export const registerRequest = async (data : User) => 
+    await axios.post<User, AxiosResponse<{}>>(`${path}/auth/register`, data);
 
-export const login = async (data : LoginUserDto) => 
-    await axios.post('http://localhost:5000/auth/login', data);
+export const loginRequest = async (data : LoginDto) => 
+    await axios.post<LoginDto, AxiosResponse<BasicUserDto>>(`${path}/auth/login`, data);
+    
+export const logoutRequest = async () => 
+    await axios.post<{}, AxiosResponse<{}>>(`${path}/auth/logout`, undefined, {withCredentials : true});
+    
+export const googleLoginRequest = async (token : string) => 
+    await axios.post<{token : string}, AxiosResponse<BasicUserDto>>(`${path}/auth/google`, {token : token});

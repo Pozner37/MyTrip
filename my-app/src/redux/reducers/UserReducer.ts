@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { BasicUserDto, User } from '../../dtos/userDtos';
 
 export interface UserState {
     showAuthModal : boolean,
-    userName : string | undefined
+    user : BasicUserDto | undefined
 }
 
 const initialState : UserState = {
     showAuthModal : false,
-    userName : undefined
+    user : undefined
 }
 
 export const userSlice = createSlice({
@@ -17,16 +18,16 @@ export const userSlice = createSlice({
         setShowAuthModal : (state, action : PayloadAction<boolean>)=>{
             state.showAuthModal = action.payload;
         },
-        setUserName : (state, action : PayloadAction<string>) => {
-            state.userName = action.payload;
+        setUser : (state, action : PayloadAction<BasicUserDto>) => {
+            state.user = action.payload;
         },
         logoutUserName : (state) => {
-            state.userName = undefined
+            state.user = undefined
         },
     }
 });
 
-export const { setShowAuthModal, setUserName, logoutUserName } = userSlice.actions
+export const { setShowAuthModal, setUser, logoutUserName } = userSlice.actions
 
 export default userSlice.reducer
 

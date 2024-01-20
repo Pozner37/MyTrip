@@ -11,20 +11,19 @@ import MenuItem from "@mui/material/MenuItem";
 import PublicIcon from "@mui/icons-material/Public";
 import { getUserProfilePicture } from "../utils/getUserProfilePicture";
 import { useNavigate } from "react-router-dom";
-import AuthModal from "./AuthModal";
-import store from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
   UserState,
   setShowAuthModal,
-  setUserName,
 } from "../redux/reducers/UserReducer";
+import useAuth from "../hooks/useAuth";
 
 const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const userName = useSelector((state: UserState) => state.userName);
+  const user = useSelector((state: UserState) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { logout } = useAuth();
 
   const handleOpenUserMenu = (event: any) => {
     setAnchorElUser(event.currentTarget);
@@ -32,6 +31,14 @@ const ResponsiveAppBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = async () => {
+    await logout().then(res => {
+      if (res.status === 200){
+        handleCloseUserMenu();
+      }
+    })
   };
 
   return (
@@ -63,7 +70,7 @@ const ResponsiveAppBar = () => {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
-            {userName && (
+            {user && (
               <Typography
                 sx={{
                   marginRight: "20px",
@@ -72,7 +79,7 @@ const ResponsiveAppBar = () => {
                   alignSelf: "center",
                 }}
               >
-                {userName}
+                {user.userName}
               </Typography>
             )}
             <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
@@ -95,9 +102,12 @@ const ResponsiveAppBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {store.getState().userName ? (
+                {user ? (
                   <>
-                    <MenuItem>
+                    <MenuItem  onClick={() => {
+                        handleCloseUserMenu();
+                        navigate('/myProfile');
+                      }}>
                       <Typography>הפרופיל</Typography>
                     </MenuItem>
                     <MenuItem
@@ -109,7 +119,7 @@ const ResponsiveAppBar = () => {
                       <Typography>הפוסטים שלי</Typography>
                     </MenuItem>
                     <MenuItem>
-                      <Typography color="red">התנתק</Typography>
+                      <Typography color="red" onClick={handleLogout}>התנתק</Typography>
                     </MenuItem>
                   </>
                 ) : (

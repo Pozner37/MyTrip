@@ -16,7 +16,8 @@ import { PostType } from "../components";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
-import store from "../redux/store";
+import { useSelector } from "react-redux";
+import { UserState } from "../redux/reducers/UserReducer";
 
 const modalStyle = {
   position: "absolute" as "absolute",
@@ -36,7 +37,7 @@ const CountryPage = () => {
   const [description, setDescription] = useState<string>("");
   const { name } = useParams();
   const [images, setImages] = useState([]);
-  const userName = store.getState().userName;
+  const user = useSelector((state: UserState) => state.user);
 
   const onChange = (
     imageList: ImageListType,
@@ -59,11 +60,11 @@ const CountryPage = () => {
 
   const addNewPost = () => {
     name &&
-      userName &&
+      user &&
       addPost({
         description,
         country: name,
-        userName: userName,
+        userName: user.userName,
       }).then(fetchPosts);
   };
 
@@ -77,7 +78,7 @@ const CountryPage = () => {
           ))) ||
           "This country has no posts"}
       </Stack>
-      {userName && (
+      {user && (
         <Tooltip title="Add new post">
           <Fab
             color="primary"
