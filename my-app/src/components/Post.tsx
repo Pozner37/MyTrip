@@ -20,7 +20,6 @@ import {
   deletePost,
   getCommentsByPost,
   getPostCommentAmount,
-  getPostImage,
   updatePost,
 } from "../utils/postsUtils";
 import AddCommentIcon from "@mui/icons-material/AddComment";
@@ -35,7 +34,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserState } from "../redux/reducers/UserReducer";
 
 interface PostProps {
@@ -87,11 +86,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
 
   return (
     <Card sx={{ width: "50%" }}>
-      <CardMedia
-        sx={{ height: "20em" }}
-        image={getPostImage(post._id)}
-        title="Post"
-      />
+      <CardMedia sx={{ height: "20em" }} image={"temp"} title="Post" />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {post.userName}
@@ -226,7 +221,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
         </Stack>
       </CardActions>
       <Collapse in={showComment} timeout="auto" unmountOnExit>
-        <CardContent sx={{maxHeight: '30em', overflowY: 'auto'}}>
+        <CardContent sx={{ maxHeight: "30em", overflowY: "auto" }}>
           {comments?.map((comment) => (
             <Comment comment={comment} />
           ))}
@@ -248,7 +243,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
                     <IconButton
                       onClick={() => {
                         commentInput &&
-                        user &&
+                          user &&
                           addCommentToPost({
                             commentContent: commentInput,
                             postId: post._id,
