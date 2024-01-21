@@ -65,7 +65,7 @@ const CountryPage = () => {
         description,
         country: name,
         userName: user.userName,
-        photo: images[0]?.dataURL || 'no-image'
+        photo: images[0]?.dataURL || "no-image",
       }).then(fetchPosts);
   };
 
@@ -73,7 +73,8 @@ const CountryPage = () => {
     <>
       <CountryCard name={name} />
       <Stack spacing={2} alignItems="center" sx={{ padding: "4%" }}>
-        {(posts && posts.length &&
+        {(posts &&
+          posts.length &&
           posts.map((post) => (
             <Post key={post.postId} post={post} fetchPostsFunc={fetchPosts} />
           ))) ||
@@ -142,15 +143,23 @@ const CountryPage = () => {
               )}
             </ReactImageUploading>
           </Stack>
-          <Button 
+          <Button
             onClick={() => {
               addNewPost();
+              setImages([]);
               setOpenModal(false);
             }}
           >
             Save
           </Button>
-          <Button onClick={() => setOpenModal(false)}>Cancel</Button>
+          <Button
+            onClick={() => {
+              setOpenModal(false);
+              setImages([]);
+            }}
+          >
+            Cancel
+          </Button>
         </Box>
       </Modal>
     </>

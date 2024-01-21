@@ -91,12 +91,16 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
     <Card sx={{ width: "50%" }}>
       <CardMedia
         sx={{ height: "20em" }}
-        image={(myPost.photo === 'no-image' || !myPost.photo) ?  require(".//../assets/placeholder.jpg") : post.photo}
+        image={
+          myPost.photo === "no-image" || !myPost.photo
+            ? require(".//../assets/placeholder.jpg")
+            : myPost.photo
+        }
         title="Post"
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {post.userName}
+          {`${post.userName} - ${post.country}`}
         </Typography>
         {edit ? (
           <>
@@ -208,9 +212,10 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
                     description,
                     photo: images[0]?.dataURL || post.photo,
                     postId: post.postId,
-                  }
+                  };
                   updatePost(updatedPost);
-                  setMyPost(updatedPost)
+                  setMyPost(updatedPost);
+                  setImages([]);
                   setEdit(false);
                 }}
               >
