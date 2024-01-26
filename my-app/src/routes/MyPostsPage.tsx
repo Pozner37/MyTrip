@@ -30,7 +30,7 @@ const MyPostsPage = () => {
       <Stack spacing={2} alignItems="center" sx={{ padding: "4%" }}>
         {(posts.length &&
           posts.map((post) => (
-            <Post key={post._id} post={post} fetchPostsFunc={fetchPosts} />
+            <Post key={post.postId} post={post} fetchPostsFunc={fetchPosts} />
           ))) ||
           `You don't have any posts`}
       </Stack>

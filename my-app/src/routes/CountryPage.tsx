@@ -36,20 +36,20 @@ const CountryPage = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const { name } = useParams();
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<ImageListType>([]);
   const user = useSelector((state: UserState) => state.user);
 
   const onChange = (
     imageList: ImageListType,
     addUpdateIndex: number[] | undefined
   ) => {
-    setImages(imageList as never[]);
+    setImages(imageList);
   };
 
   const fetchPosts = () => {
     if (name) {
       getPostsByCountry(name).then((res) => {
-        return setPosts(res.data);
+        return setPosts(res?.data);
       });
     }
   };
@@ -65,6 +65,7 @@ const CountryPage = () => {
         description,
         country: name,
         userName: user.userName,
+        photo: images[0]?.dataURL || "no-image",
       }).then(fetchPosts);
   };
 
@@ -72,9 +73,10 @@ const CountryPage = () => {
     <>
       <CountryCard name={name} />
       <Stack spacing={2} alignItems="center" sx={{ padding: "4%" }}>
-        {(posts.length &&
+        {(posts &&
+          posts.length &&
           posts.map((post) => (
-            <Post key={post._id} post={post} fetchPostsFunc={fetchPosts} />
+            <Post key={post.postId} post={post} fetchPostsFunc={fetchPosts} />
           ))) ||
           "This country has no posts"}
       </Stack>
@@ -144,12 +146,20 @@ const CountryPage = () => {
           <Button
             onClick={() => {
               addNewPost();
+              setImages([]);
               setOpenModal(false);
             }}
           >
             Save
           </Button>
-          <Button onClick={() => setOpenModal(false)}>Cancel</Button>
+          <Button
+            onClick={() => {
+              setOpenModal(false);
+              setImages([]);
+            }}
+          >
+            Cancel
+          </Button>
         </Box>
       </Modal>
     </>

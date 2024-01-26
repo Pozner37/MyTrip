@@ -13,10 +13,11 @@ export interface BaseCountry {
 }
 
 export interface PostType {
-    _id: string;
+    postId: string;
     description: string;
     userName: string;
     country: string;
+    photo: string;
 }
 
 export interface EditPostType {
@@ -24,6 +25,7 @@ export interface EditPostType {
     description: string;
     userName: string;
     country: string;
+    photo: string;
 }
 
 export interface CommentType {

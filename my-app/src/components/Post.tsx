@@ -20,7 +20,6 @@ import {
   deletePost,
   getCommentsByPost,
   getPostCommentAmount,
-  getPostImage,
   updatePost,
 } from "../utils/postsUtils";
 import AddCommentIcon from "@mui/icons-material/AddComment";
@@ -35,7 +34,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserState } from "../redux/reducers/UserReducer";
 
 interface PostProps {
@@ -44,16 +43,19 @@ interface PostProps {
 }
 
 const Post = ({ post, fetchPostsFunc }: PostProps) => {
-  const [showComment, setShowComment] = useState(false);
+  const [showComment, setShowComment] = useState<boolean>(false);
+  const [myPost, setMyPost] = useState<PostType>(post);
   const [addComment, setAddComment] = useState(false);
   const [commentCount, setCommentCount] = useState<number>(0);
   const [commentInput, setCommentInput] = useState<string>("");
   const [comments, setComments] = useState<Array<CommentType>>([]);
   const [edit, setEdit] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(post.description);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<ImageListType>([]);
   const user = useSelector((state: UserState) => state.user);
   const isPostOwner = post.userName === user?.userName;
+
+  useEffect(() => setMyPost(post), [post]);
 
   const navigate = useNavigate();
 
@@ -61,7 +63,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
     imageList: ImageListType,
     addUpdateIndex: number[] | undefined
   ) => {
-    setImages(imageList as never[]);
+    setImages(imageList);
   };
 
   const handleExpandClick = (
@@ -72,11 +74,11 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
   };
 
   const fetchComments = () => {
-    getPostCommentAmount(post._id).then((res) => {
+    getPostCommentAmount(post.postId).then((res) => {
       return setCommentCount(res.data);
     });
 
-    getCommentsByPost(post._id).then((res) => {
+    getCommentsByPost(post.postId).then((res) => {
       return setComments(res.data);
     });
   };
@@ -89,12 +91,16 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
     <Card sx={{ width: "50%" }}>
       <CardMedia
         sx={{ height: "20em" }}
-        image={getPostImage(post._id)}
+        image={
+          myPost.photo === "no-image" || !myPost.photo
+            ? require(".//../assets/placeholder.jpg")
+            : myPost.photo
+        }
         title="Post"
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {post.userName}
+          {`${post.userName} - ${post.country}`}
         </Typography>
         {edit ? (
           <>
@@ -188,7 +194,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
                 size="small"
                 endIcon={<DeleteIcon />}
                 onClick={() => {
-                  deletePost(post._id).then(fetchPostsFunc);
+                  deletePost(post.postId).then(fetchPostsFunc);
                 }}
               >
                 Delete Post
@@ -201,11 +207,15 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
                 size="small"
                 endIcon={<SaveIcon />}
                 onClick={() => {
-                  updatePost({
+                  const updatedPost = {
                     ...post,
                     description,
-                    postId: post._id,
-                  });
+                    photo: images[0]?.dataURL || post.photo,
+                    postId: post.postId,
+                  };
+                  updatePost(updatedPost);
+                  setMyPost(updatedPost);
+                  setImages([]);
                   setEdit(false);
                 }}
               >
@@ -226,7 +236,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
         </Stack>
       </CardActions>
       <Collapse in={showComment} timeout="auto" unmountOnExit>
-        <CardContent sx={{maxHeight: '30em', overflowY: 'auto'}}>
+        <CardContent sx={{ maxHeight: "30em", overflowY: "auto" }}>
           {comments?.map((comment) => (
             <Comment comment={comment} />
           ))}
@@ -248,10 +258,10 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
                     <IconButton
                       onClick={() => {
                         commentInput &&
-                        user &&
+                          user &&
                           addCommentToPost({
                             commentContent: commentInput,
-                            postId: post._id,
+                            postId: post.postId,
                             user: user.userName,
                           }).then(fetchComments);
                         handleExpandClick(addComment, setAddComment);
