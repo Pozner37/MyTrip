@@ -55,7 +55,7 @@ export const addCommentToPost = (comment: Omit<CommentType, "_id">) =>
       console.error(error);
     });
 
-export const addPost = (post: Omit<PostType, "_id">) =>
+export const addPost = (post: Omit<PostType, "postId">) =>
   axios.post(`${path}/posts/`, post).catch(function (error) {
     console.error(error);
   });

@@ -84,7 +84,7 @@ const ResponsiveAppBar = () => {
             )}
             <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src={getUserProfilePicture()} />
+                <Avatar src={user?.image} />
               </IconButton>
               <Menu
                 sx={{ mt: "45px", direction: "rtl" }}

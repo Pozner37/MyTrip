@@ -19,14 +19,17 @@ const MyProfile = () => {
     const [image, setImage] = useState(getUserProfilePicture())
     const [editedProperty, setEditedProperty] = useState<editProfileProperties | undefined>(undefined)
     const user = useSelector((state: UserState) => state.user);
-    const { updateUserName, updatePassword} = useUpdateUser();
+    const { updateUserName, updatePassword, updateProfileImage} = useUpdateUser();
 
     const saveUserFuncRecord : Record<editProfileProperties, (any) => Promise<AxiosResponse<BasicUserDto | string>>> = {
         Password : updatePassword,
         UserName : updateUserName,
-        Picture : updatePassword
+        Picture : updateProfileImage
     }
 
+    useEffect(() => {
+        setEditedProperty(image === myUser?.userName ? undefined : 'Picture')
+    }, [image])
 
     useEffect(() => {
         if(user){
@@ -52,7 +55,7 @@ const MyProfile = () => {
         <Stack sx={{display:'flex', flexDirection:'column', alignItems:'center', paddingTop:10}}>
             <ProfilePictureUpload image={image} setImage={setImage} defaultImage={myUser.image} extraAvatars={
               <Avatar>
-           <IconButton sx={{ backgroundColor:blue[500], color:'white'}} onClick={()=>{saveUser(image)}}>
+           <IconButton sx={{ backgroundColor:blue[500], color:'white'}} onClick={()=>saveUser(image)}>
             <Save />
           </IconButton>
           </Avatar>
