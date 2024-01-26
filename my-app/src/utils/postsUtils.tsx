@@ -6,11 +6,13 @@ export interface ApiResponse {
   status: number;
 }
 
+const path = process.env.REACT_APP_SERVER_PATH;
+
 export const getPostsByCountry = async (
   countryName: string
 ): Promise<ApiResponse | any> =>
   axios
-    .get<ApiResponse>(`http://localhost:3000/posts/byCountry/${countryName}`)
+    .get<ApiResponse>(`${path}/posts/byCountry/${countryName}`)
     .catch(function (error) {
       console.error(error);
     });
@@ -19,7 +21,7 @@ export const getPostsByCountry = async (
       userName: string
     ): Promise<ApiResponse | any> =>
       axios
-        .get<ApiResponse>(`http://localhost:3000/posts/byUserName/${userName}`)
+        .get<ApiResponse>(`${path}/posts/byUserName/${userName}`)
         .catch(function (error) {
           console.error(error);
         });
@@ -29,7 +31,7 @@ export const getPostCommentAmount = async (
 ): Promise<ApiResponse | any> =>
   axios
     .get<ApiResponse>(
-      `http://localhost:3000/comments/commentsCounter/${postId}`
+      `${path}/comments/commentsCounter/${postId}`
     )
     .catch(function (error) {
       console.error(error);
@@ -40,7 +42,7 @@ export const getCommentsByPost = async (
 ): Promise<ApiResponse | any> =>
   axios
     .get<ApiResponse>(
-      `http://localhost:3000/comments/getCommentsByPost/${postId}`
+      `${path}/comments/getCommentsByPost/${postId}`
     )
     .catch(function (error) {
       console.error(error);
@@ -48,23 +50,23 @@ export const getCommentsByPost = async (
 
 export const addCommentToPost = (comment: Omit<CommentType, "_id">) =>
   axios
-    .post("http://localhost:3000/comments/postComment", comment)
+    .post(`${path}/comments/postComment`, comment)
     .catch(function (error) {
       console.error(error);
     });
 
 export const addPost = (post: Omit<PostType, "postId">) =>
-  axios.post("http://localhost:3000/posts/", post).catch(function (error) {
+  axios.post(`${path}/posts/`, post).catch(function (error) {
     console.error(error);
   });
 
 export const updatePost = (post: EditPostType) =>
-  axios.put("http://localhost:3000/posts/", post).catch(function (error) {
+  axios.put(`${path}/posts/`, post).catch(function (error) {
     console.error(error);
   });
 
   export const deletePost = (postId: string) =>
-  axios.delete(`http://localhost:3000/posts/${postId}`, {
+  axios.delete(`${path}/posts/${postId}`, {
     params: { postId }
   }).catch(function (error) {
     console.error(error);

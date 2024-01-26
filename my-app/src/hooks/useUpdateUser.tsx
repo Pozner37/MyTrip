@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux"
 import { BasicUserDto, ChangePasswordDto, User } from "../dtos/userDtos"
 import { setUser } from "../redux/reducers/UserReducer"
-import { updatePasswordRequest, updateUserNameRequest } from "../utils/userUtils";
+import { updatePasswordRequest, updateProfilePictureRequest, updateUserNameRequest } from "../utils/userUtils";
 import { AxiosResponse } from "axios";
 
 const useUpdateUser = () => {
@@ -9,7 +9,6 @@ const useUpdateUser = () => {
 
     const updateUserName = async (userName : string) : Promise<AxiosResponse<BasicUserDto | string>> => {
         return await updateUserNameRequest(userName).then(res => {
-            debugger
             if (res.status === 200) {
                 console.log(`${res.data} update userName successfuly`)
                 dispatch(setUser(res.data))
@@ -22,7 +21,6 @@ const useUpdateUser = () => {
     }
 
     const updatePassword = async (passwords : ChangePasswordDto) : Promise<AxiosResponse<BasicUserDto | string>> => {
-        debugger
         return await updatePasswordRequest(passwords).then(res => {
             if (res.status === 200) {
                 console.log(`${res.data} update userName successfuly`)
@@ -35,7 +33,20 @@ const useUpdateUser = () => {
          })
     }
 
-    return {updateUserName, updatePassword}
+
+    const updateProfileImage = async (image : string) : Promise<AxiosResponse<BasicUserDto | string>> => {
+        return await updateProfilePictureRequest(image).then(res => {
+            if (res.status === 200) {
+                console.log(`${res.data} update userName successfuly`)
+                dispatch(setUser(res.data))
+            }
+            return res;
+        }).catch(err => {
+            console.error(err);
+            return err.response;
+         })
+    }
+    return {updateUserName, updatePassword, updateProfileImage}
 }
 
 export default useUpdateUser;

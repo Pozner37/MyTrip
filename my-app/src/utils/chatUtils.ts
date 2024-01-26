@@ -9,7 +9,7 @@ export const getChatFromDB = async (
   ): Promise<ApiResponse | any> =>
     axios
       .post<ApiResponse>(
-        `http://localhost:3000/messages/getChat`, users
+        `${process.env.REACT_APP_SERVER_PATH}/messages/getChat`, users
       )
       .catch(function (error) {
         console.error(error);

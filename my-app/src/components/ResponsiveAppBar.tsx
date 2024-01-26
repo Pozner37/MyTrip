@@ -49,14 +49,14 @@ const ResponsiveAppBar = () => {
           sx={{ display: "flex", justifyContent: "space-between" }}
         >
           <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <PublicIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+            <PublicIcon sx={{ display: "flex", mr: 1 }} />
             <Typography
               variant="h6"
               noWrap
               component="a"
               sx={{
                 mr: 2,
-                display: { xs: "none", md: "flex" },
+                display: "flex",
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
@@ -84,7 +84,7 @@ const ResponsiveAppBar = () => {
             )}
             <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src={getUserProfilePicture()} />
+                <Avatar src={user?.image} />
               </IconButton>
               <Menu
                 sx={{ mt: "45px", direction: "rtl" }}
