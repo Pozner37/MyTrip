@@ -32,7 +32,7 @@ export interface CommentType {
     _id: string;
     commentContent: string;
     postId: string;
-    user: string;
+    userName: string;
 }
 
 export interface MessageType {

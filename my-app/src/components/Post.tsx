@@ -261,8 +261,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
                           user &&
                           addCommentToPost({
                             commentContent: commentInput,
-                            postId: post.postId,
-                            user: user.userName,
+                            postId: post.postId
                           }).then(fetchComments);
                         handleExpandClick(addComment, setAddComment);
                       }}

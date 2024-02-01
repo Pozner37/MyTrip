@@ -48,15 +48,15 @@ export const getCommentsByPost = async (
       console.error(error);
     });
 
-export const addCommentToPost = (comment: Omit<CommentType, "_id">) =>
+export const addCommentToPost = (comment: Omit<CommentType, "_id" | "userName">) =>
   axios
-    .post(`${path}/comments/postComment`, comment)
+    .post(`${path}/comments/postComment`, comment, {withCredentials : true})
     .catch(function (error) {
       console.error(error);
     });
 
 export const addPost = (post: Omit<PostType, "postId">) =>
-  axios.post(`${path}/posts/`, post).catch(function (error) {
+  axios.post(`${path}/posts/`, post, {withCredentials : true}).catch(function (error) {
     console.error(error);
   });
 
