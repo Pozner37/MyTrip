@@ -1,5 +1,6 @@
 import axios from "axios";
 import { CommentType, EditPostType, PostType } from "../components";
+import axiosAuthInstance from "./axiosUtils";
 
 export interface ApiResponse {
   data: PostType[];
@@ -49,25 +50,26 @@ export const getCommentsByPost = async (
     });
 
 export const addCommentToPost = (comment: Omit<CommentType, "_id" | "userName">) =>
-  axios
+  axiosAuthInstance
     .post(`${path}/comments/postComment`, comment, {withCredentials : true})
     .catch(function (error) {
       console.error(error);
     });
 
 export const addPost = (post: Omit<PostType, "postId">) =>
-  axios.post(`${path}/posts/`, post, {withCredentials : true}).catch(function (error) {
+axiosAuthInstance.post(`${path}/posts/`, post, {withCredentials : true}).catch(function (error) {
     console.error(error);
   });
 
 export const updatePost = (post: EditPostType) =>
-  axios.put(`${path}/posts/`, post).catch(function (error) {
+axiosAuthInstance.put(`${path}/posts/`, post, {withCredentials : true}).catch(function (error) {
     console.error(error);
   });
 
   export const deletePost = (postId: string) =>
-  axios.delete(`${path}/posts/${postId}`, {
-    params: { postId }
+  axiosAuthInstance.delete(`${path}/posts/${postId}`, {
+    params: { postId },
+    withCredentials : true
   }).catch(function (error) {
     console.error(error);
   });

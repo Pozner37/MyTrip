@@ -1,5 +1,5 @@
-import { Avatar, Card, CardContent, CardMedia, IconButton, Typography } from "@mui/material";
-import { BasicUserDto, User } from "../dtos/userDtos";
+import { Avatar, Card, CardContent, IconButton, Typography } from "@mui/material";
+import { BasicUserDto } from "../dtos/userDtos";
 import { CardStyle } from "./CountryCard";
 import { getUserProfilePicture } from "../utils/getUserProfilePicture";
 import { useSelector } from "react-redux";

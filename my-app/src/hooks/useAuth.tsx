@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import { googleLoginRequest, loginRequest, logoutRequest, registerRequest } from "../utils/authUtils";
 import { logoutUserName, setUser } from "../redux/reducers/UserReducer";
-import Cookies from "universal-cookie";
 import { BasicUserDto, LoginDto, User } from "../dtos/userDtos";
 import { AxiosResponse } from "axios";
 
@@ -29,9 +28,6 @@ const useAuth = () => {
         return await loginRequest({userName: loginDto.userName, password : loginDto.password}).then(res => {
             if (res.status === 200) {
                 console.log(`${res.data} login successfuly`)
-                const cookies = new Cookies();
-                cookies.set('refresh_token', res.data.refreshToken, {path:'/'})
-                cookies.set('access_token', res.data.accessToken, {path:'/'})
                 dispatch(setUser(res.data))
             }
             return res;
@@ -59,9 +55,6 @@ const useAuth = () => {
         return await googleLoginRequest(token).then(res => {
             if (res.status === 200) {
                 console.log(`${res.data} login successfuly`)
-                const cookies = new Cookies();
-                cookies.set('refresh_token', res.data.refreshToken, {path:'/'})
-                cookies.set('access_token', res.data.accessToken, {path:'/'})
                 dispatch(setUser(res.data))
             }
             return res;
