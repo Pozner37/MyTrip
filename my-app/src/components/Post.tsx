@@ -140,7 +140,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
               )}
             </ReactImageUploading>
             <TextField
-              defaultValue={post.description}
+              defaultValue={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </>
