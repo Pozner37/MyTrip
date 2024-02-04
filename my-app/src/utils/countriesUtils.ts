@@ -9,6 +9,8 @@ export const getBaseCountriesByCode = (codes : Array<string>) =>
 export const getCountryByName = (name : string) => 
   getCountry(`https://restcountries.com/v3.1/name/${name}?fullText=true`);
 
+export const getCountryFlag = async (name : string) => 
+  await getCountryByName(name).then(res => res.flag);
 
 const getBaseCountries =async (path : string) => 
   await axios

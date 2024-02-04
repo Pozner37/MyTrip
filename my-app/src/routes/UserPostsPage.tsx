@@ -7,14 +7,16 @@ import { useSelector } from "react-redux";
 import { UserState } from "../redux/reducers/UserReducer";
 import ProfileCard from "../components/UserCard";
 import UserCard from "../components/UserCard";
+import { BasicUserDto } from "../dtos/userDtos";
+import { useParams } from "react-router-dom";
 
-const MyPostsPage = () => {
+const UserPostPage = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
-  const user = useSelector((state: UserState) => state.user)
+  const {userName} = useParams();
 
   const fetchPosts = () => {
-    if (user) {
-      getPostsByUser(user.userName).then((res) => {
+    if (userName) {
+      getPostsByUser(userName).then((res) => {
         return setPosts(res.data);
       });
     }
@@ -22,11 +24,11 @@ const MyPostsPage = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, [user]);
+  }, [userName]);
 
   return (
     <>
-      {user && <UserCard {...user}/>}
+      {userName && <UserCard userName={userName}/>}
       <Stack spacing={2} alignItems="center" sx={{ padding: "4%" }}>
         {(posts.length &&
           posts.map((post) => (
@@ -38,4 +40,4 @@ const MyPostsPage = () => {
   );
 };
 
-export default MyPostsPage;
+export default UserPostPage;

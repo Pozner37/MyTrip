@@ -36,6 +36,8 @@ import ReactImageUploading, { ImageListType } from "react-images-uploading";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserState } from "../redux/reducers/UserReducer";
+import CountryButton from "./CountryButton";
+import { getCountryFlag } from "../utils/countriesUtils";
 
 interface PostProps {
   post: PostType;
@@ -52,10 +54,16 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [description, setDescription] = useState<string>(post.description);
   const [images, setImages] = useState<ImageListType>([]);
+  const [countryFlag, setCountryFlag] = useState<string>();
   const user = useSelector((state: UserState) => state.user);
   const isPostOwner = post.userName === user?.userName;
 
   useEffect(() => setMyPost(post), [post]);
+
+  useEffect(() =>{
+    const setFlag = async () => setCountryFlag(await getCountryFlag(post.country));
+    setFlag();
+    }, [post.country])
 
   const navigate = useNavigate();
 
@@ -88,7 +96,7 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
   }, []);
 
   return (
-    <Card sx={{ width: "50%" }}>
+    <Card sx={{ width: "50%", position : 'relative' }}>
       <CardMedia
         sx={{ height: "20em" }}
         image={
@@ -98,9 +106,12 @@ const Post = ({ post, fetchPostsFunc }: PostProps) => {
         }
         title="Post"
       />
+      {countryFlag && <div style={{position:'absolute', top : 5, left : 5}}><CountryButton size={30} country={{name : myPost.country, flag : countryFlag}}/></div>}
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {`${post.userName} - ${post.country}`}
+        <Typography gutterBottom variant="h5" component="div"
+        sx={{cursor: "pointer"}}
+         onClick={() => navigate(`/posts/${post.userName}`)}>
+          {post.userName}
         </Typography>
         {edit ? (
           <>

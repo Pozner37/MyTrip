@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { BasicUserDto, ChangePasswordDto } from "../dtos/userDtos";
 import axiosAuthInstance from "./axiosUtils";
 
@@ -15,3 +15,6 @@ export const updatePasswordRequest = async (passwords : ChangePasswordDto) =>
 
 export const updateProfilePictureRequest = async (image : string) => 
     await axiosAuthInstance.post<{image : string}, AxiosResponse<BasicUserDto>>(`${path}/user/profileImage`, {image : image}, { withCredentials : true});
+
+export const getProfilePictureRequest = async (userName : string) => 
+    await axios.get<{}, AxiosResponse<string>>(`${path}/user/profileImage/${userName}`);

@@ -113,7 +113,7 @@ const ResponsiveAppBar = () => {
                     <MenuItem
                       onClick={() => {
                         handleCloseUserMenu();
-                        navigate("/myposts");
+                        navigate(`/posts/${user.userName}`);
                       }}
                     >
                       <Typography>הפוסטים שלי</Typography>
