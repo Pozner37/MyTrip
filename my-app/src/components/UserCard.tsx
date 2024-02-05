@@ -1,7 +1,6 @@
 import { Avatar, Card, CardContent, IconButton, Typography } from "@mui/material";
-import { BasicUserDto } from "../dtos/userDtos";
 import { CardStyle } from "./CountryCard";
-import { getUserProfilePicture } from "../utils/getUserProfilePicture";
+import ForumIcon from "@mui/icons-material/Forum";
 import { useSelector } from "react-redux";
 import { UserState } from "../redux/reducers/UserReducer";
 import { Edit } from "@mui/icons-material";
@@ -35,9 +34,9 @@ const UserCard = ({userName} : UserCardProps) => {
                 {userName}
             </Typography>
             </CardContent>
-            {isMyUser && <IconButton sx={{float:'right', backgroundColor:blue[500], color:'white'}} onClick={() => navigate('/myProfile')}>
-                <Edit/>
-            </IconButton>}
+            <IconButton sx={{float:'right', backgroundColor:blue[500], color:'white'}} onClick={() => isMyUser ? navigate('/myProfile') : navigate("/chat", { state: { toUser: userName } })}>
+              {isMyUser ? <Edit/> : <ForumIcon/> }
+            </IconButton>
         </Card>
     )
 }
