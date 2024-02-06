@@ -56,7 +56,7 @@ const CountryPage = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [name]);
 
   const addNewPost = () => {
     name &&
