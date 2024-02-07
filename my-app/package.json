@@ -28,9 +28,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prod": "serve -l 80 -s build",
-    "prod-https": "serve --ssl-cert /home/st111/client-cert.pem --ssl-key /home/st111/client-key.pem  -s build -l 80",
-    "prod-pm2": "pm2 start -- prod-https"
+    "http": "serve -l 80 -s build",
+    "https": "serve --ssl-cert /home/st111/client-cert.pem --ssl-key /home/st111/client-key.pem  -s build -l 80",
+    "prod": "pm2 start -- https"
   },
   "eslintConfig": {
     "extends": [
