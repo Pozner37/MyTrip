@@ -37,6 +37,7 @@ const ResponsiveAppBar = () => {
     await logout().then(res => {
       if (res.status === 200){
         handleCloseUserMenu();
+        navigate('/');
       }
     })
   };
