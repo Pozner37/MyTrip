@@ -6,12 +6,14 @@ import store from "../redux/store";
 import { useLocation } from "react-router-dom";
 import { getChatFromDB } from "../utils/chatUtils";
 import { Send } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { UserState } from "../redux/reducers/UserReducer";
 
 const ChatPage = () => {
   const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const location = useLocation();
-  const username = store.getState().user?.userName;
+  const username = useSelector((state: UserState) => state.user)?.userName
 
   socket.on("receive-message", (message) => {
     if (message.fromUser === location.state.toUser) {
@@ -36,7 +38,7 @@ const ChatPage = () => {
 
     // establish live updates from socket
     socket.emit("new-user", username);
-  }, []);
+  }, [username]);
 
   const sendMessage = () => {
     if (username) {
